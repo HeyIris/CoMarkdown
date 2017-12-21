@@ -21,7 +21,7 @@ object MdEditAdapter : RecyclerView.Adapter<EditViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): EditViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.editview_item, parent, false)
+        val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_editview, parent, false)
         val vh = EditViewHolder(view)
         return vh
     }
