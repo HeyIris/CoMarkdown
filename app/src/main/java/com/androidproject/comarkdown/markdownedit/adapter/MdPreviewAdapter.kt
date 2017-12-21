@@ -25,7 +25,7 @@ object MdPreviewAdapter : RecyclerView.Adapter<PreviewViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PreviewViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_preview, parent, false)
+        val view = LayoutInflater.from(parent?.context).inflate(R.layout.preview_item, parent, false)
         val vh = PreviewViewHolder(view)
         return vh
     }
