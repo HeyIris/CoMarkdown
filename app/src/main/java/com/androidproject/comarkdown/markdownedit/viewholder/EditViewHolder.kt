@@ -5,7 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
-import kotlinx.android.synthetic.main.editview_item.view.*
+import kotlinx.android.synthetic.main.item_editview.view.*
 import kotlin.properties.Delegates
 
 /**
