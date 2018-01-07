@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.filesystem.adapter.FileAdapter;
 import com.androidproject.comarkdown.filesystem.async.QueryAsyncTask;
 import com.androidproject.comarkdown.filesystem.utils.FileSortFactory;
