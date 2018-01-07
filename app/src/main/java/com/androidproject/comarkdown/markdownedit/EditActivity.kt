@@ -1,5 +1,6 @@
 package com.androidproject.comarkdown.markdownedit
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
+import com.androidproject.comarkdown.filesystem.ActivityFile
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
@@ -60,7 +62,8 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 // Handle the camera action
             }
             R.id.nav_file -> {
-
+                val intent = Intent(this, ActivityFile::class.java)
+                startActivity(intent)
             }
             R.id.nav_option -> {
 
