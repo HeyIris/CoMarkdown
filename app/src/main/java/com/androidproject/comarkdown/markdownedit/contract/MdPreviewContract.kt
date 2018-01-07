@@ -1,5 +1,6 @@
 package com.androidproject.comarkdown.markdownedit.contract
 
+import android.widget.TextView
 import com.androidproject.comarkdown.base.BasePresenter
 import com.androidproject.comarkdown.base.BaseView
 

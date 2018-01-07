@@ -1,5 +1,6 @@
 package com.androidproject.comarkdown.markdownedit.contract
 
+import android.widget.TextView
 import com.androidproject.comarkdown.base.BasePresenter
 import com.androidproject.comarkdown.base.BaseView
 
@@ -9,6 +10,8 @@ import com.androidproject.comarkdown.base.BaseView
 interface MdEditContract{
     interface View : BaseView<Presenter>{
         var isActive: Boolean
+
+        fun setTextChangedListener(textView: TextView?)
     }
 
     interface Presenter : BasePresenter{

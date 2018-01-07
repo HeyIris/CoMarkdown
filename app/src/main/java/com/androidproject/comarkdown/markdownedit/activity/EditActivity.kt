@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.markdownedit.adapter.EditViewPagerAdapter
-import com.androidproject.comarkdown.markdownedit.adapter.MdEditAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
@@ -28,8 +27,8 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        edit_view_pager.adapter = EditViewPagerAdapter(supportFragmentManager)
-        MdEditAdapter.itemList.add("")
+        val adapter = EditViewPagerAdapter(supportFragmentManager)
+        edit_view_pager.adapter = adapter
     }
 
     override fun onBackPressed() {

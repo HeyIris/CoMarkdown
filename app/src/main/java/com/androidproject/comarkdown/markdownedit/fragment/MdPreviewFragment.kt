@@ -2,19 +2,23 @@ package com.androidproject.comarkdown.markdownedit.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.androidproject.comarkdown.R
-import com.androidproject.comarkdown.markdownedit.adapter.MdPreviewAdapter
 import com.androidproject.comarkdown.markdownedit.contract.MdPreviewContract
+import com.zzhoujay.richtext.CacheType
+import com.zzhoujay.richtext.RichText
+import com.zzhoujay.richtext.RichType
 import kotlinx.android.synthetic.main.fragment_markdown_preview.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 /**
  * Created by evan on 2018/1/7.
  */
-class MdPreviewFragment : Fragment(), MdPreviewContract.View{
+class MdPreviewFragment : Fragment(), MdPreviewContract.View {
     override lateinit var presenter: MdPreviewContract.Presenter
 
     override var isActive: Boolean = false
@@ -27,11 +31,18 @@ class MdPreviewFragment : Fragment(), MdPreviewContract.View{
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_markdown_preview, null)
+        EventBus.getDefault().register(this)
         return view
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        preview_view_list.layoutManager = LinearLayoutManager(context)
-        preview_view_list.adapter = MdPreviewAdapter
+    }
+
+    @Subscribe
+    fun onEvent(data: Editable?) {
+        //RichText.from(itemList[position]).type(RichType.markdown).showBorder(true)
+        //.cache(CacheType.all).into(holder.textView);
+        RichText.from(data.toString()).type(RichType.markdown).showBorder(true)
+                .cache(CacheType.all).into(preview_text)
     }
 }
