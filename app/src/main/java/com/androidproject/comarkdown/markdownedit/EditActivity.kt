@@ -26,8 +26,7 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        val adapter = EditViewPagerAdapter(supportFragmentManager)
-        edit_view_pager.adapter = adapter
+        edit_view_pager.adapter = EditViewPagerAdapter(supportFragmentManager)
     }
 
     override fun onBackPressed() {

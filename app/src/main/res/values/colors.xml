@@ -5,4 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="EditViewBackGround">#EEEEEE</color>
     <color name="TextViewBackGround">#FFFFFF</color>
+    <color name="lgray">#FF929292</color>
+    <color name="llgray">#FFC2C2C2</color>
+    <color name="lllgray">#FFEAEAEA</color>
+    <color name="white">#FFFF</color>
+    <color name="black">#000</color>
 </resources>
