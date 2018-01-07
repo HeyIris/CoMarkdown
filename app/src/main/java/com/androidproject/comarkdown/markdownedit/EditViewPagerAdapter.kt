@@ -1,4 +1,4 @@
-package com.androidproject.comarkdown.markdownedit.adapter
+package com.androidproject.comarkdown.markdownedit
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

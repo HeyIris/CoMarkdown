@@ -1,4 +1,4 @@
-package com.androidproject.comarkdown.markdownedit.activity
+package com.androidproject.comarkdown.markdownedit
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
-import com.androidproject.comarkdown.markdownedit.adapter.EditViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
