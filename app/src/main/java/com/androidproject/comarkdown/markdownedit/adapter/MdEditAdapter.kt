@@ -28,6 +28,6 @@ object MdEditAdapter : RecyclerView.Adapter<EditViewHolder>() {
 
     override fun onBindViewHolder(holder: EditViewHolder, position: Int) {
         holder.content = itemList[position]
-        holder.index = position
+        holder.setFragmentIndex(position)
     }
 }

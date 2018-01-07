@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import com.androidproject.comarkdown.markdownedit.adapter.MdPreviewAdapter
 import kotlinx.android.synthetic.main.item_editview.view.*
 import kotlin.properties.Delegates
 
@@ -23,7 +24,7 @@ class EditViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         index = -1
     }
 
-    public fun setPosition(position: Int) {
+    public fun setFragmentIndex(position: Int) {
         index = position
         if(index!=-1){
             editView.addTextChangedListener(object :TextWatcher{
@@ -34,6 +35,7 @@ class EditViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
+                    MdPreviewAdapter.itemList[index] = p0 as String
                 }
             })
         }
