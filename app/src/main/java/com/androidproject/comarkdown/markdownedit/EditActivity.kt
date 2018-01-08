@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
+import com.androidproject.comarkdown.account.AccountActivity
 import com.androidproject.comarkdown.filesystem.ActivityFile
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -59,7 +60,8 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_account -> {
-                // Handle the camera action
+                val intent = Intent(this, AccountActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_file -> {
                 val intent = Intent(this, ActivityFile::class.java)
