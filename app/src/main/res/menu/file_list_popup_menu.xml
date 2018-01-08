@@ -9,5 +9,9 @@
     <item
         android:id="@+id/more_copy"
         android:title="复制"></item>
+    <item
+        android:id="@+id/more_upload"
+        android:title="上传"></item>
+
 
 </menu>

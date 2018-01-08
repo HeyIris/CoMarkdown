@@ -10,4 +10,5 @@
     <color name="lllgray">#FFEAEAEA</color>
     <color name="white">#FFFF</color>
     <color name="black">#000</color>
+    <color name="BackgroundGray">#f5f5f5</color>
 </resources>

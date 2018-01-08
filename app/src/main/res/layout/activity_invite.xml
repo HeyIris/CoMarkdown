@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/BackgroundGray">
+
+    <TextView
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:textSize="20dp"
+        android:text="邀请好友"
+        android:gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:layout_marginVertical="15dp"
+        android:background="@drawable/bg_fragment"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/bg_edittext2"
+            android:hint="好友邮箱"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="10dp"
+            android:paddingVertical="8dp"
+            android:textColorHint="@color/lgray" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_button"
+            android:text="邀请"
+            android:textColor="#ffff"
+            android:textSize="22dp" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+</LinearLayout>
