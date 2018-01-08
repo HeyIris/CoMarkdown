@@ -1,6 +1,7 @@
 package com.androidproject.comarkdown.network
 
 import com.androidproject.comarkdown.data.LoginInfo
+import com.androidproject.comarkdown.data.RegisterInfo
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -11,5 +12,11 @@ interface ApiServer {
     @FormUrlEncoded
     @POST("login/")
     fun login(@Field("username") username: String,
-              @Field("password") password: String) : Observable<LoginInfo>
+              @Field("password") password: String): Observable<LoginInfo>
+
+    @FormUrlEncoded
+    @POST("register/")
+    fun register(@Field("username") username: String,
+                 @Field("password") password: String,
+                 @Field("email") email: String): Observable<RegisterInfo>
 }

@@ -29,17 +29,16 @@
         android:textColorHint="#8888"
         android:inputType="textPassword"/>
     <EditText
-        android:id="@+id/register_repeat_password"
+        android:id="@+id/register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="确认密码"
+        android:hint="邮箱"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
         android:paddingVertical="8dp"
         android:paddingLeft="5dp"
         android:background="@drawable/bg_edittextl"
-        android:textColorHint="#8888"
-        android:inputType="textPassword"/>
+        android:textColorHint="#8888"/>
     <Button
         android:id="@+id/register_confirm"
         android:layout_marginHorizontal="40dp"

@@ -31,7 +31,7 @@ class RegisterFragment: Fragment(),RegisterContract.View {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        register_confirm.setOnClickListener { presenter.register(register_username.text.toString(), register_password.text.toString(), register_repeat_password.text.toString()) }
+        register_confirm.setOnClickListener { presenter.register(register_username.text.toString(), register_password.text.toString(), register_email.text.toString()) }
     }
 
     override fun getViewContext(): Context {

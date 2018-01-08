@@ -15,6 +15,6 @@ interface RegisterContract{
     }
 
     interface Presenter : BasePresenter {
-        fun register(username: String, password: String, repeat_password: String)
+        fun register(username: String, password: String, email: String)
     }
 }
