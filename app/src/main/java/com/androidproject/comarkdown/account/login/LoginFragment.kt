@@ -7,21 +7,24 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.androidproject.comarkdown.R
+import com.androidproject.comarkdown.data.LoginInfo
+import com.androidproject.comarkdown.markdownedit.EditActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlin.properties.Delegates
 
 /**
  * Created by evan on 2018/1/8.
  */
-class LoginFragment:Fragment(),LoginContract.View{
+class LoginFragment:Fragment(),LoginContract.View {
     override lateinit var presenter: LoginContract.Presenter
 
     override var isActive: Boolean = false
         get() = isAdded
 
-    override var loginInfo by Delegates.observable(""){ property, oldValue, newValue ->
-        if (newValue[0] == '{'){
+    override var loginInfo:LoginInfo by Delegates.observable(LoginInfo("","","","")){ property, oldValue, newValue ->
+        if(newValue.success == "true"){
             loginSuccess()
         }
     }
@@ -39,7 +42,9 @@ class LoginFragment:Fragment(),LoginContract.View{
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        login_confirm.setOnClickListener { presenter.login(login_username.text.toString(), login_password.text.toString()) }
+        login_confirm.setOnClickListener {
+            presenter.login(login_username.text.toString(), login_password.text.toString())
+        }
     }
 
     override fun getViewContext(): Context {
@@ -47,6 +52,12 @@ class LoginFragment:Fragment(),LoginContract.View{
     }
 
     override fun loginSuccess() {
-
+        val bundle = Bundle()
+        bundle.putString("username", loginInfo.username)
+        bundle.putString("email", loginInfo.email)
+        bundle.putString("token", loginInfo.token)
+        val intent = Intent(context, EditActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 }

@@ -10,12 +10,15 @@ import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.account.AccountActivity
+import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.filesystem.ActivityFile
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var loginInfo:LoginInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,12 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        val bundle = this.intent.extras
+        loginInfo = LoginInfo(bundle.getString("username"),bundle.getString("email"),"true",bundle.getString("token"))
+        val navView = nav_view.inflateHeaderView(R.layout.nav_header_main)
+        navView.nav_username.text = loginInfo.username
+        navView.nav_email.text = loginInfo.email
 
         edit_view_pager.adapter = EditViewPagerAdapter(supportFragmentManager)
     }
