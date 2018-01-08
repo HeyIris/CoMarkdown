@@ -12,6 +12,7 @@
        android:src="@drawable/logo"/>
 
     <EditText
+        android:id="@+id/login_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="用户名"
@@ -21,6 +22,7 @@
         android:background="@drawable/bg_edittextl"
         android:textColorHint="#8888"/>
     <EditText
+        android:id="@+id/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="密码"
@@ -30,8 +32,9 @@
         android:paddingLeft="5dp"
         android:background="@drawable/bg_edittextl"
         android:textColorHint="#8888"
-        android:password="true"/>
+        android:inputType="textPassword"/>
     <Button
+        android:id="@+id/login_confirm"
         android:layout_marginHorizontal="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_button"
