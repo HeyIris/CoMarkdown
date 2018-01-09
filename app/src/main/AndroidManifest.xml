@@ -30,7 +30,8 @@
         <activity
             android:name=".markdownedit.EditActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

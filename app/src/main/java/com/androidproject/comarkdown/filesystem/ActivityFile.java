@@ -101,7 +101,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
                 //Intent intent = new Intent();
                 // 打开、显示
                 Uri data = Uri.fromFile(file);
-                Toast.makeText(getBaseContext(),data.toString(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),data.toString(),Toast.LENGTH_SHORT).show();
                 int index = file.getName().lastIndexOf(".");
                 String suffix = file.getName().substring(index + 1);
                 //String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
@@ -109,6 +109,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
                 Bundle bundle = new Bundle();
                 bundle.putString("data", data.toString());
                 intent.putExtras(bundle);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 //intent.setDataAndType(data, type);
                 //startActivity(intent);
@@ -297,7 +298,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
                     public void onClick(View v) {
                         String name =  newFileName.getText().toString();
                         if (name != null) {
-                            File file = new File(getPathString() +"/"+ name+".txt");
+                            File file = new File(getPathString() +"/"+ name+".md");
                             if (file.exists()) {
                                 file.delete();
                             }

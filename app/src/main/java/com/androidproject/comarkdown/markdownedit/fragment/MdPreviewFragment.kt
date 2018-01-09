@@ -34,8 +34,6 @@ class MdPreviewFragment : Fragment(), MdPreviewContract.View {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_markdown_preview, null)
         EventBus.getDefault().register(this)
-        val bundle = this.arguments
-        Toast.makeText(getContext(), bundle.getString("data"), Toast.LENGTH_SHORT).show()
         return view
     }
 
@@ -44,8 +42,6 @@ class MdPreviewFragment : Fragment(), MdPreviewContract.View {
 
     @Subscribe
     fun onEvent(data: Editable?) {
-        //RichText.from(itemList[position]).type(RichType.markdown).showBorder(true)
-        //.cache(CacheType.all).into(holder.textView);
         RichText.from(data.toString()).type(RichType.markdown).showBorder(true)
                 .cache(CacheType.all).into(preview_text)
     }

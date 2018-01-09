@@ -1,5 +1,6 @@
 package com.androidproject.comarkdown.account.login
 
+import com.androidproject.comarkdown.data.AccountInfo
 import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.network.ApiClient
 import com.androidproject.comarkdown.network.ApiErrorModel
@@ -25,6 +26,9 @@ class LoginPresenter(val loginView:LoginContract.View):LoginContract.Presenter{
                     override fun success(data: LoginInfo) {
                         if(data.success == "true"){
                             loginView.loginInfo = data
+                            AccountInfo.username = data.username
+                            AccountInfo.email = data.email
+                            AccountInfo.token = data.token
                         }
                     }
 

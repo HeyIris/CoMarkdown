@@ -38,18 +38,16 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        val bundle = this.intent.extras
-        loginInfo = LoginInfo(bundle.getString("username"),bundle.getString("email"),"true",bundle.getString("token"))
         val navView = nav_view.inflateHeaderView(R.layout.nav_header_main)
-        navView.nav_username.text = loginInfo.username
-        navView.nav_email.text = loginInfo.email
+        val adapter = EditViewPagerAdapter(supportFragmentManager)
+        edit_view_pager.adapter = adapter
+        processExtraData()
+    }
 
-        edit_view_pager.adapter = EditViewPagerAdapter(supportFragmentManager)
-        if(!bundle.getString("data").isEmpty()){
-            MdEditFragment().setArguments(bundle);
-        }
-
-
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        this.intent = intent
+        processExtraData()
     }
 
     override fun onBackPressed() {
@@ -85,6 +83,7 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_file -> {
                 val intent = Intent(this, ActivityFile::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
             }
             R.id.nav_option -> {
@@ -100,5 +99,19 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun processExtraData(){
+        val navView = nav_view.getHeaderView(0)
+        val bundle = this.intent.extras
+        if(bundle.getString("username") != null){
+            loginInfo = LoginInfo(bundle.getString("username"),bundle.getString("email"),"true",bundle.getString("token"))
+            navView.nav_username.text = loginInfo.username
+            navView.nav_email.text = loginInfo.email
+        }
+
+        if(bundle.getString("data") != null) {
+            (edit_view_pager.adapter as EditViewPagerAdapter).view_list[0].arguments = bundle
+        }
     }
 }

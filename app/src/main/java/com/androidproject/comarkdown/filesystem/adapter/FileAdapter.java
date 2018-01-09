@@ -17,8 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidproject.comarkdown.R;
+import com.androidproject.comarkdown.data.AccountInfo;
+import com.androidproject.comarkdown.data.UploadInfo;
 import com.androidproject.comarkdown.filesystem.utils.FileSortFactory;
 import com.androidproject.comarkdown.filesystem.view.RenameFileDialog;
+import com.androidproject.comarkdown.network.ApiClient;
+import com.androidproject.comarkdown.network.ApiErrorModel;
+import com.androidproject.comarkdown.network.ApiResponse;
+import com.androidproject.comarkdown.network.NetworkScheduler;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -26,6 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by wuxinying on 2017/12/8.
@@ -231,9 +243,34 @@ public class FileAdapter extends BaseAdapter {
                     doRemove();
                     break;
                 case R.id.more_upload:
-                    /**
-                     * 上传函数
-                     */
+                if(AccountInfo.token == null){
+                        break;
+                    }else if(AccountInfo.token.equals("")){
+                        break;
+                    }
+                    File file = filedata.get(position);
+                    RequestBody fileRequsetBody = RequestBody.create(MediaType.parse("text/x-markdown; charset=utf-8"),file);
+                    MultipartBody.Part mdFile = MultipartBody.Part.createFormData("file",null,fileRequsetBody);
+                    ApiClient.Companion.getInstance().service.uploadFile(RequestBody.create(null,AccountInfo.username),
+                            RequestBody.create(null,AccountInfo.token),
+                            RequestBody.create(null,file.getName()),
+                            mdFile)
+                            .compose(NetworkScheduler.INSTANCE.<UploadInfo>compose())
+                            .subscribe(new ApiResponse<UploadInfo>(context){
+                                @Override
+                                public void success(UploadInfo data) {
+                                    if(data.getSuccess().equals("true")){
+                                        Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(context,"上传失败",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void fail(int statusCode, @NotNull ApiErrorModel apiErrorModel) {
+                                }
+                            });
+
                     break;
                 default:
                     break;

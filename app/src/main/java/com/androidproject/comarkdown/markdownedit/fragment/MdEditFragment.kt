@@ -13,6 +13,8 @@ import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.markdownedit.contract.MdEditContract
 import kotlinx.android.synthetic.main.fragment_markdown_edit.*
 import org.greenrobot.eventbus.EventBus
+import java.io.File
+import java.net.URI
 
 /**
  * Created by evan on 2018/1/7.
@@ -24,6 +26,7 @@ class MdEditFragment : Fragment(),MdEditContract.View {
         get() = isAdded
 
     var preview:TextView? = null
+    private lateinit var file:File
 
     override fun onResume() {
         super.onResume()
@@ -36,7 +39,8 @@ class MdEditFragment : Fragment(),MdEditContract.View {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        edit_text.addTextChangedListener(object :TextWatcher{
+        val bundle = this.arguments
+        edit_text.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -45,12 +49,14 @@ class MdEditFragment : Fragment(),MdEditContract.View {
 
             override fun afterTextChanged(p0: Editable?) {
                 EventBus.getDefault().post(p0)
+                file.writeText(p0.toString())
             }
         })
+        file = File(URI(bundle.getString("data")))
+        edit_text.text.append(file.readText())
     }
 
     override fun setTextChangedListener(textView: TextView?){
-
         preview = textView
     }
 }
