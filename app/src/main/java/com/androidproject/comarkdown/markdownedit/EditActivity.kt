@@ -16,15 +16,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.widget.TextView
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.widget.Toast
-import com.androidproject.comarkdown.markdownedit.fragment.MdEditFragment
+import com.androidproject.comarkdown.utils.ShakeListener
 
 
 class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var loginInfo:LoginInfo
+    private lateinit var shakeListener:ShakeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +39,24 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val adapter = EditViewPagerAdapter(supportFragmentManager)
         edit_view_pager.adapter = adapter
         processExtraData()
+
+        shakeListener = ShakeListener(this)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         this.intent = intent
         processExtraData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        shakeListener.registerSensor()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        shakeListener.unregisterSensor()
     }
 
     override fun onBackPressed() {

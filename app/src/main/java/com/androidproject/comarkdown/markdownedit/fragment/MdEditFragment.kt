@@ -40,6 +40,8 @@ class MdEditFragment : Fragment(),MdEditContract.View {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         val bundle = this.arguments
+        file = File(URI(bundle.getString("data")))
+        edit_text.text.append(file.readText())
         edit_text.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -52,8 +54,6 @@ class MdEditFragment : Fragment(),MdEditContract.View {
                 file.writeText(p0.toString())
             }
         })
-        file = File(URI(bundle.getString("data")))
-        edit_text.text.append(file.readText())
     }
 
     override fun setTextChangedListener(textView: TextView?){
