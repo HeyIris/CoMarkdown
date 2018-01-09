@@ -23,8 +23,8 @@ class LoginFragment:Fragment(),LoginContract.View {
     override var isActive: Boolean = false
         get() = isAdded
 
-    override var loginInfo:LoginInfo by Delegates.observable(LoginInfo("","","","")){ property, oldValue, newValue ->
-        if(newValue.success == "true"){
+    override var loginInfo: LoginInfo by Delegates.observable(LoginInfo("", "", "", "")) { property, oldValue, newValue ->
+        if (newValue.success == "true") {
             loginSuccess()
         }
     }
@@ -57,6 +57,7 @@ class LoginFragment:Fragment(),LoginContract.View {
         bundle.putString("email", loginInfo.email)
         bundle.putString("token", loginInfo.token)
         val intent = Intent(context, EditActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtras(bundle)
         startActivity(intent)
     }
