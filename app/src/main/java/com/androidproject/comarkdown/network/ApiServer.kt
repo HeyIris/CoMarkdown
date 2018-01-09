@@ -1,14 +1,10 @@
 package com.androidproject.comarkdown.network
 
-import com.androidproject.comarkdown.data.DownloadInfo
-import com.androidproject.comarkdown.data.LoginInfo
-import com.androidproject.comarkdown.data.RegisterInfo
-import com.androidproject.comarkdown.data.UploadInfo
+import com.androidproject.comarkdown.data.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
-import java.io.File
 
 /**
  * Created by evan on 2017/12/31.
@@ -37,4 +33,9 @@ interface ApiServer {
     fun downloadFile(@Field("username") username: String,
                      @Field("token") token: String,
                      @Field("filename") filename: String): Observable<DownloadInfo>
+
+    @FormUrlEncoded
+    @POST("master_files/")
+    fun onlineFileList(@Field("username") username: String,
+                       @Field("token") token: String): Observable<OnlineFileInfo>
 }

@@ -27,10 +27,10 @@ import java.util.Date;
 
 public class DownloadFileAdapter extends BaseAdapter{
 
-    ArrayList<File> filedata;
+    ArrayList<String> filedata;
     Context context;
 
-    public DownloadFileAdapter(Context context, ArrayList<File> data) {
+    public DownloadFileAdapter(Context context, ArrayList<String> data) {
         this.context = context;
         this.filedata = data;
         downloadFileItemListener = new DownloadFileListItemListender();
@@ -57,7 +57,7 @@ public class DownloadFileAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        File file = filedata.get(position);
+        String file = filedata.get(position);
         downloadFileItemListener = new DownloadFileListItemListender();
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -70,8 +70,8 @@ public class DownloadFileAdapter extends BaseAdapter{
 
         //将position与ibMore绑定
         viewHolder.filemore.setTag(position);
-         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         viewHolder.fileName.setText(file.getName()+".md");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        viewHolder.fileName.setText(file);
         viewHolder.filemore.setOnClickListener(downloadFileItemListener);
         return convertView;
     }

@@ -10,6 +10,7 @@ import com.androidproject.comarkdown.base.BaseView
 interface MdEditContract{
     interface View : BaseView<Presenter>{
         var isActive: Boolean
+        var filePath: String
 
         fun setTextChangedListener(textView: TextView?)
     }

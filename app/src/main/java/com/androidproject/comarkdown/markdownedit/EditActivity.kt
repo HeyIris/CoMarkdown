@@ -12,6 +12,8 @@ import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.account.AccountActivity
 import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.filesystem.ActivityFile
+import com.androidproject.comarkdown.filesystem.ActivityFileDownload
+import com.androidproject.comarkdown.markdownedit.fragment.MdEditFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
@@ -102,7 +104,8 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_manage -> {
-
+                val intent = Intent(this,ActivityFileDownload::class.java)
+                startActivity(intent)
             }
         }
 
@@ -120,7 +123,7 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         if(bundle.getString("data") != null) {
-            (edit_view_pager.adapter as EditViewPagerAdapter).view_list[0].arguments = bundle
+            ((edit_view_pager.adapter as EditViewPagerAdapter).view_list[0] as MdEditFragment).filePath = bundle.getString("data")
         }
     }
 }

@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".filesystem.ActivityFileDownload"
+            android:name=".account.AccountActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -26,8 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".account.AccountActivity"/>
+        <activity android:name=".filesystem.ActivityFileDownload"/>
+        <activity android:name=".filesystem.ActivityFile"/>
         <activity
             android:name=".markdownedit.EditActivity"
             android:label="@string/app_name"
