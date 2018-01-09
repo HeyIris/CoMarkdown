@@ -20,10 +20,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidproject.comarkdown.MainActivity;
 import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.filesystem.adapter.FileAdapter;
 import com.androidproject.comarkdown.filesystem.async.QueryAsyncTask;
 import com.androidproject.comarkdown.filesystem.utils.FileSortFactory;
+import com.androidproject.comarkdown.markdownedit.EditActivity;
+import com.androidproject.comarkdown.markdownedit.fragment.MdPreviewFragment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -95,15 +98,20 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
             File file = files[position];
             if (file.isFile()) {
                 // 打开
-                Intent intent = new Intent();
+                //Intent intent = new Intent();
                 // 打开、显示
-                intent.setAction(Intent.ACTION_VIEW);
                 Uri data = Uri.fromFile(file);
+                Toast.makeText(getBaseContext(),data.toString(),Toast.LENGTH_SHORT).show();
                 int index = file.getName().lastIndexOf(".");
                 String suffix = file.getName().substring(index + 1);
-                String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
-                intent.setDataAndType(data, type);
+                //String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
+                Intent intent=new Intent(ActivityFile.this,EditActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("data", data.toString());
+                intent.putExtras(bundle);
                 startActivity(intent);
+                //intent.setDataAndType(data, type);
+                //startActivity(intent);
             } else {
                 //如果是文件夹
                 // 清除列表数据

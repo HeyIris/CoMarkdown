@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.markdownedit.contract.MdEditContract
 import kotlinx.android.synthetic.main.fragment_markdown_edit.*

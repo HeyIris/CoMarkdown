@@ -16,6 +16,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.widget.TextView
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.widget.Toast
+import com.androidproject.comarkdown.markdownedit.fragment.MdEditFragment
+
 
 class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var loginInfo:LoginInfo
@@ -39,6 +45,11 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.nav_email.text = loginInfo.email
 
         edit_view_pager.adapter = EditViewPagerAdapter(supportFragmentManager)
+        if(!bundle.getString("data").isEmpty()){
+            MdEditFragment().setArguments(bundle);
+        }
+
+
     }
 
     override fun onBackPressed() {

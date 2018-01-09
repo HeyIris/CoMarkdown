@@ -13,6 +13,10 @@ import android.widget.Toast
 import com.androidproject.comarkdown.filesystem.ActivityFile
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.widget.TextView
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
