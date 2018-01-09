@@ -1,11 +1,13 @@
 package com.androidproject.comarkdown.markdownedit.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.markdownedit.contract.MdPreviewContract
 import com.zzhoujay.richtext.CacheType
@@ -32,6 +34,8 @@ class MdPreviewFragment : Fragment(), MdPreviewContract.View {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_markdown_preview, null)
         EventBus.getDefault().register(this)
+        val bundle = this.arguments
+        Toast.makeText(getContext(), bundle.getString("data"), Toast.LENGTH_SHORT).show()
         return view
     }
 
