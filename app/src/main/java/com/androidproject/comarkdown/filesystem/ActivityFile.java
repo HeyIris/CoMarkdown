@@ -145,7 +145,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
         }
         return result;
     }
-    long lastBackPressed = 0;
+
     @Override
     public void onBackPressed() {
         if (ifSearching) {
@@ -153,14 +153,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
             showChange(getPathString());
         }else {
             if (nowPathStack.peek() == rootPath) {
-                //当前时间
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - lastBackPressed < 2000) {
-                    super.onBackPressed();
-                } else {
-                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                }
-                lastBackPressed = currentTime;
+                super.onBackPressed();
             } else {
                 nowPathStack.pop();
                 showChange(getPathString());

@@ -243,34 +243,7 @@ public class FileAdapter extends BaseAdapter {
                     doRemove();
                     break;
                 case R.id.more_upload:
-                if(AccountInfo.token == null){
-                        break;
-                    }else if(AccountInfo.token.equals("")){
-                        break;
-                    }
-                    File file = filedata.get(position);
-                    RequestBody fileRequsetBody = RequestBody.create(MediaType.parse("text/x-markdown; charset=utf-8"),file);
-                    MultipartBody.Part mdFile = MultipartBody.Part.createFormData("file",null,fileRequsetBody);
-                    ApiClient.Companion.getInstance().service.uploadFile(RequestBody.create(null,AccountInfo.username),
-                            RequestBody.create(null,AccountInfo.token),
-                            RequestBody.create(null,file.getName()),
-                            mdFile)
-                            .compose(NetworkScheduler.INSTANCE.<UploadInfo>compose())
-                            .subscribe(new ApiResponse<UploadInfo>(context){
-                                @Override
-                                public void success(UploadInfo data) {
-                                    if(data.getSuccess().equals("true")){
-                                        Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        Toast.makeText(context,"上传失败",Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void fail(int statusCode, @NotNull ApiErrorModel apiErrorModel) {
-                                }
-                            });
-
+                    doUpload();
                     break;
                 default:
                     break;
@@ -295,6 +268,36 @@ public class FileAdapter extends BaseAdapter {
                     showToast(file.getName() + " 删除成功");
                 }
             }, null);
+        }
+
+        private void doUpload(){
+            if(AccountInfo.token.equals("")){
+                return;
+            }else if(AccountInfo.token.equals("")){
+                return;
+            }
+            File file = filedata.get(position);
+            RequestBody fileRequsetBody = RequestBody.create(MediaType.parse("text/x-markdown; charset=utf-8"),file);
+            MultipartBody.Part mdFile = MultipartBody.Part.createFormData("file",null,fileRequsetBody);
+            ApiClient.Companion.getInstance().service.uploadFile(RequestBody.create(null,AccountInfo.username),
+                    RequestBody.create(null,AccountInfo.token),
+                    RequestBody.create(null,file.getName()),
+                    mdFile)
+                    .compose(NetworkScheduler.INSTANCE.<UploadInfo>compose())
+                    .subscribe(new ApiResponse<UploadInfo>(context){
+                        @Override
+                        public void success(UploadInfo data) {
+                            if(data.getSuccess().equals("true")){
+                                Toast.makeText(context,"上传成功",Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(context,"上传失败",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void fail(int statusCode, @NotNull ApiErrorModel apiErrorModel) {
+                        }
+                    });
         }
 
         /**
