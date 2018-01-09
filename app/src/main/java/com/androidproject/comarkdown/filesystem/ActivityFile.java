@@ -101,7 +101,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
                 //Intent intent = new Intent();
                 // 打开、显示
                 Uri data = Uri.fromFile(file);
-                Toast.makeText(getBaseContext(),data.toString(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),data.toString(),Toast.LENGTH_SHORT).show();
                 int index = file.getName().lastIndexOf(".");
                 String suffix = file.getName().substring(index + 1);
                 //String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);

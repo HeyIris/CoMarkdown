@@ -38,15 +38,19 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        val bundle = this.intent.extras
-        loginInfo = LoginInfo(bundle.getString("username"),bundle.getString("email"),"true",bundle.getString("token"))
         val navView = nav_view.inflateHeaderView(R.layout.nav_header_main)
-        navView.nav_username.text = loginInfo.username
-        navView.nav_email.text = loginInfo.email
+        val bundle = this.intent.extras
+        if(bundle.getString("username") != null){
+            loginInfo = LoginInfo(bundle.getString("username"),bundle.getString("email"),"true",bundle.getString("token"))
+            navView.nav_username.text = loginInfo.username
+            navView.nav_email.text = loginInfo.email
+        }
 
-        edit_view_pager.adapter = EditViewPagerAdapter(supportFragmentManager)
+        val adapter = EditViewPagerAdapter(supportFragmentManager)
+        edit_view_pager.adapter = adapter
+        //Toast.makeText(this,bundle.getString("data"),Toast.LENGTH_SHORT).show()
         if(!bundle.getString("data").isEmpty()){
-            MdEditFragment().setArguments(bundle);
+            adapter.view_list[0].arguments = bundle
         }
 
 

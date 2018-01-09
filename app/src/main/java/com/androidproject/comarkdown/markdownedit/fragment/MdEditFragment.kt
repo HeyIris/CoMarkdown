@@ -36,6 +36,8 @@ class MdEditFragment : Fragment(),MdEditContract.View {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        val bundle = this.arguments
+        Toast.makeText(getContext(), bundle.getString("data"), Toast.LENGTH_SHORT).show()
         edit_text.addTextChangedListener(object :TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
