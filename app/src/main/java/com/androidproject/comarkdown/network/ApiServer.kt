@@ -5,6 +5,8 @@ import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.data.RegisterInfo
 import com.androidproject.comarkdown.data.UploadInfo
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 import java.io.File
 
@@ -23,16 +25,16 @@ interface ApiServer {
                  @Field("password") password: String,
                  @Field("email") email: String): Observable<RegisterInfo>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("upload_file/")
-    fun uploadFile(@Field("username") username: String,
-                   @Field("token") token: String,
-                   @Field("filename") filename: String,
-                   @Field("file") file:File): Observable<UploadInfo>
+    fun uploadFile(@Part("username") username: RequestBody,
+                   @Part("token") token: RequestBody,
+                   @Part("filename") filename: RequestBody,
+                   @Part file: MultipartBody.Part): Observable<UploadInfo>
 
     @FormUrlEncoded
     @POST("download_file/")
     fun downloadFile(@Field("username") username: String,
-                   @Field("token") token: String,
-                   @Field("filename") filename: String): Observable<DownloadInfo>
+                     @Field("token") token: String,
+                     @Field("filename") filename: String): Observable<DownloadInfo>
 }
