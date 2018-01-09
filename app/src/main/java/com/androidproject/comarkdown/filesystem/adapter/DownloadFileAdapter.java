@@ -12,14 +12,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidproject.comarkdown.R;
+import com.androidproject.comarkdown.data.AccountInfo;
+import com.androidproject.comarkdown.data.DownloadInfo;
+import com.androidproject.comarkdown.network.ApiClient;
+import com.androidproject.comarkdown.network.ApiErrorModel;
+import com.androidproject.comarkdown.network.ApiResponse;
+import com.androidproject.comarkdown.network.NetworkScheduler;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by wuxinying on 2018/1/9.
@@ -140,10 +148,21 @@ public class DownloadFileAdapter extends BaseAdapter{
         }
 
         /**
-         * 复制
+         * 下载
          */
         private void doDownload() {
+            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,filedata.get(position))
+                    .compose(NetworkScheduler.INSTANCE.<DownloadInfo>compose())
+                    .subscribe(new ApiResponse<DownloadInfo>(context) {
+                        @Override
+                        public void success(DownloadInfo data) {
+                            Toast.makeText(context,data.getFile().getName(),Toast.LENGTH_SHORT).show();
+                        }
 
+                        @Override
+                        public void fail(int statusCode, @NotNull ApiErrorModel apiErrorModel) {
+                        }
+                    });
         }
 
 
