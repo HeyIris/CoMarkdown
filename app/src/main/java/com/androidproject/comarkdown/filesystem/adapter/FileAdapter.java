@@ -243,7 +243,7 @@ public class FileAdapter extends BaseAdapter {
                     doRemove();
                     break;
                 case R.id.more_upload:
-                    if(AccountInfo.token == null){
+                if(AccountInfo.token == null){
                         break;
                     }else if(AccountInfo.token.equals("")){
                         break;
@@ -270,6 +270,7 @@ public class FileAdapter extends BaseAdapter {
                                 public void fail(int statusCode, @NotNull ApiErrorModel apiErrorModel) {
                                 }
                             });
+
                     break;
                 default:
                     break;
@@ -277,6 +278,9 @@ public class FileAdapter extends BaseAdapter {
             return true;
         }
 
+        /**
+         * 文件上传
+         */
         /**
          * 删除
          */
