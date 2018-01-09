@@ -230,12 +230,20 @@ public class FileAdapter extends BaseAdapter {
                 case R.id.more_remove:
                     doRemove();
                     break;
+                case R.id.more_upload:
+                    /**
+                     * 上传函数
+                     */
+                    break;
                 default:
                     break;
             }
             return true;
         }
 
+        /**
+         * 文件上传
+         */
         /**
          * 删除
          */
