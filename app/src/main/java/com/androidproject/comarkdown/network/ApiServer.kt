@@ -39,4 +39,19 @@ interface ApiServer {
     @POST("master_files/")
     fun onlineFileList(@Field("username") username: String,
                        @Field("token") token: String): Observable<OnlineFileInfo>
+
+    @FormUrlEncoded
+    @POST("do_OT/{master}@{id}/")
+    fun doOT(@Path("master") master: String,
+             @Path("id") id:Int,
+             @Field("username") username: String,
+             @Field("token") token: String,
+             @Field("operation") operation: List<String>): Observable<DoOTInfo>
+
+    @FormUrlEncoded
+    @POST("create_server/{master}@{id}/")
+    fun createServer(@Path("master") master: String,
+                     @Path("id") id:Int,
+                     @Field("username") username: String,
+                     @Field("token") token: String): Observable<CreateServerInfo>
 }

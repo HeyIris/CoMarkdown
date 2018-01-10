@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.data.AccountInfo;
 import com.androidproject.comarkdown.data.OnlineFileInfo;
+import com.androidproject.comarkdown.data.OnlineFileItem;
 import com.androidproject.comarkdown.filesystem.adapter.DownloadFileAdapter;
 import com.androidproject.comarkdown.network.ApiClient;
 import com.androidproject.comarkdown.network.ApiErrorModel;
@@ -31,7 +32,7 @@ public class ActivityFileDownload extends AppCompatActivity{
     private String rootPath;
     private TextView showTextView;
     private ListView listView;
-    private ArrayList<String> fileList = new ArrayList<>();
+    private ArrayList<OnlineFileItem> fileList = new ArrayList<>();
     private DownloadFileAdapter fileAdapter;
     private Stack<String> nowPathStack;
 
@@ -60,7 +61,7 @@ public class ActivityFileDownload extends AppCompatActivity{
                     @Override
                     public void success(OnlineFileInfo data) {
                         if (data.getSuccess().equals("true")) {
-                            fileList = new ArrayList<String>(data.getList());
+                            fileList = new ArrayList<>(data.getList());
                             setFileAdapter();
                         }
                     }

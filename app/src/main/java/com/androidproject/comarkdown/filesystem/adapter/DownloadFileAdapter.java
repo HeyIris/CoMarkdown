@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.data.AccountInfo;
 import com.androidproject.comarkdown.data.DownloadInfo;
+import com.androidproject.comarkdown.data.OnlineFileItem;
 import com.androidproject.comarkdown.network.ApiClient;
 import com.androidproject.comarkdown.network.ApiErrorModel;
 import com.androidproject.comarkdown.network.ApiResponse;
@@ -42,10 +43,10 @@ import okhttp3.ResponseBody;
 
 public class DownloadFileAdapter extends BaseAdapter{
 
-    ArrayList<String> filedata;
+    ArrayList<OnlineFileItem> filedata;
     Context context;
 
-    public DownloadFileAdapter(Context context, ArrayList<String> data) {
+    public DownloadFileAdapter(Context context, ArrayList<OnlineFileItem> data) {
         this.context = context;
         this.filedata = data;
         downloadFileItemListener = new DownloadFileListItemListender();
@@ -72,7 +73,7 @@ public class DownloadFileAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String file = filedata.get(position);
+        String file = filedata.get(position).getName();
         downloadFileItemListener = new DownloadFileListItemListender();
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -158,7 +159,7 @@ public class DownloadFileAdapter extends BaseAdapter{
          * 下载
          */
         private void doDownload() {
-            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,filedata.get(position))
+            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,filedata.get(position).getName())
                     .compose(NetworkScheduler.INSTANCE.<ResponseBody>compose())
                     .subscribe(new ApiResponse<ResponseBody>(context) {
                         @Override
@@ -166,7 +167,7 @@ public class DownloadFileAdapter extends BaseAdapter{
                             try{
                                 InputStream is = data.byteStream();
                                 String path = "/storage/emulated/0/Download";
-                                File file = new File(path,filedata.get(position));
+                                File file = new File(path,filedata.get(position).getName());
                                 if (file.exists()) {
                                     file.delete();
                                 }
