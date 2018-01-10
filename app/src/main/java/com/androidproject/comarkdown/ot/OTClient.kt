@@ -42,7 +42,7 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun searchFile(){
-        if(AccountInfo.file.master == AccountInfo.username){
+        if((AccountInfo.file.master == AccountInfo.username) || (AccountInfo.file.master == "")){
             ApiClient.instance.service.onlineFileList(AccountInfo.username,AccountInfo.token)
                     .compose(NetworkScheduler.compose())
                     .subscribe(object : ApiResponse<OnlineFileInfo>(context) {
@@ -70,26 +70,6 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
                             if (data.partake_files != null){
                                 for (item in data.partake_files){
                                     if(item.name == name && item.master == AccountInfo.file.master){
-                                        AccountInfo.file = item
-                                        fileID = item.id
-                                        createServer()
-                                        break
-                                    }
-                                }
-                            }
-                        }
-
-                        override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
-                        }
-                    })
-        }else{
-            ApiClient.instance.service.partakeFileList(AccountInfo.username,AccountInfo.token)
-                    .compose(NetworkScheduler.compose())
-                    .subscribe(object : ApiResponse<PartakeFileInfo>(context) {
-                        override fun success(data: PartakeFileInfo) {
-                            if (data.partake_files != null){
-                                for (item in data.partake_files){
-                                    if(item.name == name){
                                         AccountInfo.file = item
                                         fileID = item.id
                                         createServer()

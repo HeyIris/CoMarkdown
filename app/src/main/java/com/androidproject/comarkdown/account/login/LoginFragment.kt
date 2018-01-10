@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.androidproject.comarkdown.MainActivity
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.markdownedit.EditActivity
@@ -36,7 +37,6 @@ class LoginFragment:Fragment(),LoginContract.View {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_login, null)
-
         return view
     }
 
@@ -52,6 +52,7 @@ class LoginFragment:Fragment(),LoginContract.View {
     }
 
     override fun loginSuccess() {
+        /*
         val bundle = Bundle()
         bundle.putString("username", loginInfo.username)
         bundle.putString("email", loginInfo.email)
@@ -59,6 +60,6 @@ class LoginFragment:Fragment(),LoginContract.View {
         val intent = Intent(context, EditActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         intent.putExtras(bundle)
-        startActivity(intent)
+        startActivity(intent)*/
     }
 }

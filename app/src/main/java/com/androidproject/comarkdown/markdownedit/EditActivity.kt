@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
-import com.androidproject.comarkdown.account.AccountActivity
+import com.androidproject.comarkdown.account.setting.SettingFragment
 import com.androidproject.comarkdown.data.AccountInfo
 import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.filesystem.ActivityFile
@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import com.androidproject.comarkdown.utils.ShakeListener
+import com.androidproject.comarkdown.utils.addFragment
 
 
 class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -91,8 +92,8 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_account -> {
-                val intent = Intent(this, AccountActivity::class.java)
-                startActivity(intent)
+                //val intent = Intent(this, AccountFragment::class.java)
+                //startActivity(intent)
             }
             R.id.nav_file -> {
                 val intent = Intent(this, ActivityFile::class.java)
@@ -100,7 +101,7 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_option -> {
-
+                addFragment(SettingFragment(),R.id.main_frame)
             }
             R.id.nav_share -> {
                 val intent = Intent(this, InviteActivity::class.java)
@@ -111,9 +112,14 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
         }
-
+        item.isChecked = false
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun popInvite(){
+        val intent = Intent(this, InviteActivity::class.java)
+        startActivity(intent)
     }
 
     private fun processExtraData(){

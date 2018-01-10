@@ -3,12 +3,16 @@ package com.androidproject.comarkdown.account
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import com.androidproject.comarkdown.R
 import kotlinx.android.synthetic.main.activity_sign.*
 
-class AccountActivity : AppCompatActivity() {
+class AccountFragment : Fragment() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -24,11 +28,14 @@ class AccountActivity : AppCompatActivity() {
         false
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign)
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater?.inflate(R.layout.activity_sign, null)
+        return view
+    }
 
-        main_contain.adapter = AccountPagerAdapter(supportFragmentManager)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        main_contain.adapter = AccountPagerAdapter(childFragmentManager)
         main_contain.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             private var menuItem: MenuItem = navigation.menu.getItem(0).setChecked(false)
 

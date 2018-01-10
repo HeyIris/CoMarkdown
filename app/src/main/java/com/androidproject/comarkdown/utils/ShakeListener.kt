@@ -8,6 +8,8 @@ import android.hardware.SensorManager
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.widget.Toast
+import com.androidproject.comarkdown.MainActivity
+import com.androidproject.comarkdown.markdownedit.EditActivity
 import kotlin.math.sqrt
 
 /**
@@ -53,7 +55,7 @@ class ShakeListener(context: Context) : SensorEventListener {
 
             val speed = sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ) / timeInterval * 10000
             if (speed > SPEED_THRESHOLD) {
-                Toast.makeText(viewContext, "shake it off", Toast.LENGTH_SHORT).show()
+                (viewContext as MainActivity).popInvite()
             }
         } else {
             return
