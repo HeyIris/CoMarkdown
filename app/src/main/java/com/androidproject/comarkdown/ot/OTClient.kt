@@ -42,44 +42,67 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun searchFile(){
-        ApiClient.instance.service.partakeFileList(AccountInfo.username,AccountInfo.token)
-                .compose(NetworkScheduler.compose())
-                .subscribe(object : ApiResponse<PartakeFileInfo>(context) {
-                    override fun success(data: PartakeFileInfo) {
-                        if (data.partake_files != null){
-                            for (item in data.partake_files){
-                                if(item.name == name){
-                                    AccountInfo.file = item
-                                    fileID = item.id
-                                    createServer()
-                                    break
+        if(AccountInfo.file.master == AccountInfo.username){
+            ApiClient.instance.service.onlineFileList(AccountInfo.username,AccountInfo.token)
+                    .compose(NetworkScheduler.compose())
+                    .subscribe(object : ApiResponse<OnlineFileInfo>(context) {
+                        override fun success(data: OnlineFileInfo) {
+                            if (data.list != null) {
+                                for (item in data.list) {
+                                    if (item.name == name) {
+                                        AccountInfo.file = PartakeFileItem(AccountInfo.username, item.name, item.id)
+                                        fileID = item.id
+                                        createServer()
+                                        break
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
-                    }
-                })
-
-        ApiClient.instance.service.onlineFileList(AccountInfo.username,AccountInfo.token)
-                .compose(NetworkScheduler.compose())
-                .subscribe(object : ApiResponse<OnlineFileInfo>(context) {
-                    override fun success(data: OnlineFileInfo) {
-                        if (data.list != null) {
-                            for (item in data.list) {
-                                if (item.name == name) {
-                                    AccountInfo.file = PartakeFileItem(AccountInfo.username, item.name, item.id)
-                                    fileID = item.id
-                                    break
+                        override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
+                        }
+                    })
+        }else if (AccountInfo.file.master != ""){
+            ApiClient.instance.service.partakeFileList(AccountInfo.username,AccountInfo.token)
+                    .compose(NetworkScheduler.compose())
+                    .subscribe(object : ApiResponse<PartakeFileInfo>(context) {
+                        override fun success(data: PartakeFileInfo) {
+                            if (data.partake_files != null){
+                                for (item in data.partake_files){
+                                    if(item.name == name && item.master == AccountInfo.file.master){
+                                        AccountInfo.file = item
+                                        fileID = item.id
+                                        createServer()
+                                        break
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
-                    }
-                })
+                        override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
+                        }
+                    })
+        }else{
+            ApiClient.instance.service.partakeFileList(AccountInfo.username,AccountInfo.token)
+                    .compose(NetworkScheduler.compose())
+                    .subscribe(object : ApiResponse<PartakeFileInfo>(context) {
+                        override fun success(data: PartakeFileInfo) {
+                            if (data.partake_files != null){
+                                for (item in data.partake_files){
+                                    if(item.name == name){
+                                        AccountInfo.file = item
+                                        fileID = item.id
+                                        createServer()
+                                        break
+                                    }
+                                }
+                            }
+                        }
+
+                        override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
+                        }
+                    })
+        }
     }
 
     fun createServer(){

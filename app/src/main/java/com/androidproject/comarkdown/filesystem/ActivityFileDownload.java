@@ -26,9 +26,15 @@ import com.androidproject.comarkdown.network.NetworkScheduler;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Stack;
+
+import okhttp3.ResponseBody;
 
 /**
  * Created by wuxinying on 2018/1/9.
@@ -107,8 +113,7 @@ public class ActivityFileDownload extends AppCompatActivity{
         fileAdapter = new DownloadFileAdapter(this, fileList);
         //fileAdapter.setonCopyListner(this);
         listView.setAdapter(fileAdapter);
-
-
+        listView.setOnItemClickListener(new DownloadFileItemClickListener());
     }
 
     //得到当前栈路径的String
@@ -130,7 +135,7 @@ public class ActivityFileDownload extends AppCompatActivity{
 
     }
 
-    class FileItemClickListener implements AdapterView.OnItemClickListener {
+    class DownloadFileItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(
@@ -138,26 +143,49 @@ public class ActivityFileDownload extends AppCompatActivity{
                 View view,
                 int position,
                 long id) {
+            final PartakeFileItem pfi = fileList.get(position);
+            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,pfi.getMaster(),pfi.getName())
+                    .compose(NetworkScheduler.INSTANCE.<ResponseBody>compose())
+                    .subscribe(new ApiResponse<ResponseBody>(ActivityFileDownload.this) {
+                        @Override
+                        public void success(ResponseBody data) {
+                            try{
+                                InputStream is = data.byteStream();
+                                String path = "/storage/emulated/0/Download";
+                                File file = new File(path,pfi.getName());
+                                if (file.exists()) {
+                                    file.delete();
+                                }
+                                file.createNewFile();
+                                FileOutputStream fos = new FileOutputStream(file);
+                                BufferedInputStream bis = new BufferedInputStream(is);
+                                byte[] buffer = new byte[1024];
+                                int len;
+                                while((len = bis.read(buffer)) != -1){
+                                    fos.write(buffer,0,len);
+                                }
+                                fos.flush();
+                                fos.close();
+                                bis.close();
+                                is.close();
+                                Intent intent = new Intent(ActivityFileDownload.this,EditActivity.class);
+                                Bundle bundle = new Bundle();
+                                Uri uriPath = Uri.fromFile(file);
+                                bundle.putString("data",uriPath.toString());
+                                bundle.putString("master",pfi.getMaster());
+                                bundle.putString("filename",pfi.getName());
+                                intent.putExtras(bundle);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                startActivity(intent);
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
 
-            File file = files[position];
-            if (file.isFile()) {
-                // 打开
-                //Intent intent = new Intent();
-                // 打开、显示
-                Uri data = Uri.fromFile(file);
-                //Toast.makeText(getBaseContext(),data.toString(),Toast.LENGTH_SHORT).show();
-                int index = file.getName().lastIndexOf(".");
-                String suffix = file.getName().substring(index + 1);
-                //String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
-                Intent intent=new Intent(ActivityFileDownload.this,EditActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("data", data.toString());
-                intent.putExtras(bundle);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                //intent.setDataAndType(data, type);
-                //startActivity(intent);
-            }
+                        @Override
+                        public void fail(int statusCode, @NotNull ApiErrorModel apiErrorModel) {
+                        }
+                    });
         }
     }
 }

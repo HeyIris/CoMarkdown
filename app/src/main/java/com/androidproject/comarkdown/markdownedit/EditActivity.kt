@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.account.AccountActivity
+import com.androidproject.comarkdown.data.AccountInfo
 import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.filesystem.ActivityFile
 import com.androidproject.comarkdown.filesystem.ActivityFileDownload
@@ -126,6 +127,12 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if(bundle.getString("data") != null) {
             ((edit_view_pager.adapter as EditViewPagerAdapter).view_list[0] as MdEditFragment).filePath = bundle.getString("data")
+        }
+
+        if (bundle.getString("master") != null){
+            ((edit_view_pager.adapter as EditViewPagerAdapter).view_list[0] as MdEditFragment).filePath = bundle.getString("data")
+            AccountInfo.file.master = bundle.getString("master")
+            AccountInfo.file.name = bundle.getString("filename")
         }
     }
 }
