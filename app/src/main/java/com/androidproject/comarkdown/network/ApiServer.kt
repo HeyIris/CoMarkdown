@@ -4,6 +4,7 @@ import com.androidproject.comarkdown.data.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 /**
@@ -32,7 +33,7 @@ interface ApiServer {
     @POST("download_file/")
     fun downloadFile(@Field("username") username: String,
                      @Field("token") token: String,
-                     @Field("filename") filename: String): Observable<DownloadInfo>
+                     @Field("filename") filename: String): Observable<ResponseBody>
 
     @FormUrlEncoded
     @POST("master_files/")

@@ -1,6 +1,7 @@
 package com.androidproject.comarkdown.filesystem.adapter;
 
 import android.content.Context;
+import android.os.Environment;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,10 +25,16 @@ import com.androidproject.comarkdown.network.NetworkScheduler;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
 
 /**
  * Created by wuxinying on 2018/1/9.
@@ -152,11 +159,32 @@ public class DownloadFileAdapter extends BaseAdapter{
          */
         private void doDownload() {
             ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,filedata.get(position))
-                    .compose(NetworkScheduler.INSTANCE.<DownloadInfo>compose())
-                    .subscribe(new ApiResponse<DownloadInfo>(context) {
+                    .compose(NetworkScheduler.INSTANCE.<ResponseBody>compose())
+                    .subscribe(new ApiResponse<ResponseBody>(context) {
                         @Override
-                        public void success(DownloadInfo data) {
-                            Toast.makeText(context,data.getFile().getName(),Toast.LENGTH_SHORT).show();
+                        public void success(ResponseBody data) {
+                            try{
+                                InputStream is = data.byteStream();
+                                String path = "/storage/emulated/0/Download";
+                                File file = new File(path,filedata.get(position));
+                                if (file.exists()) {
+                                    file.delete();
+                                }
+                                file.createNewFile();
+                                FileOutputStream fos = new FileOutputStream(file);
+                                BufferedInputStream bis = new BufferedInputStream(is);
+                                byte[] buffer = new byte[1024];
+                                int len;
+                                while((len = bis.read(buffer)) != -1){
+                                    fos.write(buffer,0,len);
+                                }
+                                fos.flush();
+                                fos.close();
+                                bis.close();
+                                is.close();
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
                         }
 
                         @Override

@@ -61,6 +61,7 @@ public class ActivityFileDownload extends AppCompatActivity{
                     public void success(OnlineFileInfo data) {
                         if (data.getSuccess().equals("true")) {
                             fileList = new ArrayList<String>(data.getList());
+                            setFileAdapter();
                         }
                     }
 
@@ -90,5 +91,13 @@ public class ActivityFileDownload extends AppCompatActivity{
             result = temp.pop() + result;
         }
         return result;
+    }
+
+    private void setFileAdapter(){
+        //showTextView.setText(getPathString());
+        fileAdapter = new DownloadFileAdapter(this, fileList);
+        //fileAdapter.setonCopyListner(this);
+        listView.setAdapter(fileAdapter);
+
     }
 }
