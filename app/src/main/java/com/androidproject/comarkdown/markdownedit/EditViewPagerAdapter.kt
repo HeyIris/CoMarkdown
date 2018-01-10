@@ -1,15 +1,14 @@
 package com.androidproject.comarkdown.markdownedit
 
-import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.androidproject.comarkdown.markdownedit.contract.MdEditContract
-import com.androidproject.comarkdown.markdownedit.contract.MdPreviewContract
-import com.androidproject.comarkdown.markdownedit.fragment.MdEditFragment
-import com.androidproject.comarkdown.markdownedit.fragment.MdPreviewFragment
-import com.androidproject.comarkdown.markdownedit.presenter.MdEditPresenter
-import com.androidproject.comarkdown.markdownedit.presenter.MdPreviewPresenter
+import com.androidproject.comarkdown.markdownedit.edit.MdEditContract
+import com.androidproject.comarkdown.markdownedit.preview.MdPreviewContract
+import com.androidproject.comarkdown.markdownedit.edit.MdEditFragment
+import com.androidproject.comarkdown.markdownedit.preview.MdPreviewFragment
+import com.androidproject.comarkdown.markdownedit.edit.MdEditPresenter
+import com.androidproject.comarkdown.markdownedit.preview.MdPreviewPresenter
 
 /**
  * Created by evan on 2017/12/21.

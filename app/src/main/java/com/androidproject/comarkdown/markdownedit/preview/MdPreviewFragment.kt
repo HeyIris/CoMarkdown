@@ -1,15 +1,12 @@
-package com.androidproject.comarkdown.markdownedit.fragment
+package com.androidproject.comarkdown.markdownedit.preview
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.androidproject.comarkdown.R
-import com.androidproject.comarkdown.markdownedit.contract.MdPreviewContract
 import com.zzhoujay.richtext.CacheType
 import com.zzhoujay.richtext.RichText
 import com.zzhoujay.richtext.RichType

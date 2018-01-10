@@ -41,17 +41,37 @@ interface ApiServer {
                        @Field("token") token: String): Observable<OnlineFileInfo>
 
     @FormUrlEncoded
+    @POST("partake_files/")
+    fun partakeFileList(@Field("username") username: String,
+                       @Field("token") token: String): Observable<PartakeFileInfo>
+
+    @FormUrlEncoded
     @POST("do_OT/{master}@{id}/")
     fun doOT(@Path("master") master: String,
-             @Path("id") id:Int,
+             @Path("id") id: Int,
              @Field("username") username: String,
              @Field("token") token: String,
-             @Field("operation") operation: List<String>): Observable<DoOTInfo>
+             @Field("operation") operation: List<String>,
+             @Field("revision") revision: Int): Observable<DoOTInfo>
 
     @FormUrlEncoded
     @POST("create_server/{master}@{id}/")
     fun createServer(@Path("master") master: String,
-                     @Path("id") id:Int,
+                     @Path("id") id: Int,
                      @Field("username") username: String,
                      @Field("token") token: String): Observable<CreateServerInfo>
+
+    @FormUrlEncoded
+    @POST("exit_coorperative_edit/{master}@{id}/")
+    fun exitServer(@Path("master") master: String,
+                   @Path("id") id: Int,
+                   @Field("username") username: String,
+                   @Field("token") token: String): Observable<ExitServerInfo>
+
+    @FormUrlEncoded
+    @POST("invite/")
+    fun invite(@Field("username") username: String,
+               @Field("token") token: String,
+               @Field("filename") filename: String,
+               @Field("invite") invite: String): Observable<InviteInfo>
 }

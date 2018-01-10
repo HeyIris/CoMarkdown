@@ -1,6 +1,6 @@
-package com.androidproject.comarkdown.markdownedit.presenter
+package com.androidproject.comarkdown.markdownedit.preview
 
-import com.androidproject.comarkdown.markdownedit.contract.MdPreviewContract
+import com.androidproject.comarkdown.markdownedit.preview.MdPreviewContract
 
 /**
  * Created by evan on 2018/1/7.

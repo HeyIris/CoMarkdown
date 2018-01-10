@@ -13,20 +13,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidproject.comarkdown.MainActivity;
 import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.filesystem.adapter.FileAdapter;
 import com.androidproject.comarkdown.filesystem.async.QueryAsyncTask;
 import com.androidproject.comarkdown.filesystem.utils.FileSortFactory;
 import com.androidproject.comarkdown.markdownedit.EditActivity;
-import com.androidproject.comarkdown.markdownedit.fragment.MdPreviewFragment;
 
 import java.io.File;
 import java.io.FileInputStream;

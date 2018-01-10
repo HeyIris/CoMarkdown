@@ -13,7 +13,7 @@ import com.androidproject.comarkdown.account.AccountActivity
 import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.filesystem.ActivityFile
 import com.androidproject.comarkdown.filesystem.ActivityFileDownload
-import com.androidproject.comarkdown.markdownedit.fragment.MdEditFragment
+import com.androidproject.comarkdown.markdownedit.edit.MdEditFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*

@@ -11,6 +11,8 @@ import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.data.AccountInfo;
 import com.androidproject.comarkdown.data.OnlineFileInfo;
 import com.androidproject.comarkdown.data.OnlineFileItem;
+import com.androidproject.comarkdown.data.PartakeFileInfo;
+import com.androidproject.comarkdown.data.PartakeFileItem;
 import com.androidproject.comarkdown.filesystem.adapter.DownloadFileAdapter;
 import com.androidproject.comarkdown.network.ApiClient;
 import com.androidproject.comarkdown.network.ApiErrorModel;
@@ -32,7 +34,7 @@ public class ActivityFileDownload extends AppCompatActivity{
     private String rootPath;
     private TextView showTextView;
     private ListView listView;
-    private ArrayList<OnlineFileItem> fileList = new ArrayList<>();
+    private ArrayList<PartakeFileItem> fileList = new ArrayList<>();
     private DownloadFileAdapter fileAdapter;
     private Stack<String> nowPathStack;
 
@@ -55,13 +57,13 @@ public class ActivityFileDownload extends AppCompatActivity{
         //获得本地文件信息列表，绑定到data
         //将根路径推入路径栈
         //nowPathStack.push(rootPath);
-        ApiClient.Companion.getInstance().service.onlineFileList(AccountInfo.username, AccountInfo.token)
-                .compose(NetworkScheduler.INSTANCE.<OnlineFileInfo>compose())
-                .subscribe(new ApiResponse<OnlineFileInfo>(this) {
+        ApiClient.Companion.getInstance().service.partakeFileList(AccountInfo.username, AccountInfo.token)
+                .compose(NetworkScheduler.INSTANCE.<PartakeFileInfo>compose())
+                .subscribe(new ApiResponse<PartakeFileInfo>(this) {
                     @Override
-                    public void success(OnlineFileInfo data) {
+                    public void success(PartakeFileInfo data) {
                         if (data.getSuccess().equals("true")) {
-                            fileList = new ArrayList<>(data.getList());
+                            fileList = new ArrayList<PartakeFileItem>(data.getList());
                             setFileAdapter();
                         }
                     }

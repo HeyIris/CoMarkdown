@@ -19,6 +19,7 @@ import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.data.AccountInfo;
 import com.androidproject.comarkdown.data.DownloadInfo;
 import com.androidproject.comarkdown.data.OnlineFileItem;
+import com.androidproject.comarkdown.data.PartakeFileItem;
 import com.androidproject.comarkdown.network.ApiClient;
 import com.androidproject.comarkdown.network.ApiErrorModel;
 import com.androidproject.comarkdown.network.ApiResponse;
@@ -43,10 +44,10 @@ import okhttp3.ResponseBody;
 
 public class DownloadFileAdapter extends BaseAdapter{
 
-    ArrayList<OnlineFileItem> filedata;
+    ArrayList<PartakeFileItem> filedata;
     Context context;
 
-    public DownloadFileAdapter(Context context, ArrayList<OnlineFileItem> data) {
+    public DownloadFileAdapter(Context context, ArrayList<PartakeFileItem> data) {
         this.context = context;
         this.filedata = data;
         downloadFileItemListener = new DownloadFileListItemListender();

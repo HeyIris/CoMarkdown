@@ -1,10 +1,7 @@
 package com.androidproject.comarkdown.ot
 
 import android.content.Context
-import com.androidproject.comarkdown.data.AccountInfo
-import com.androidproject.comarkdown.data.CreateServerInfo
-import com.androidproject.comarkdown.data.DoOTInfo
-import com.androidproject.comarkdown.data.OnlineFileInfo
+import com.androidproject.comarkdown.data.*
 import com.androidproject.comarkdown.network.ApiClient
 import com.androidproject.comarkdown.network.ApiErrorModel
 import com.androidproject.comarkdown.network.ApiResponse
@@ -75,12 +72,27 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
                     }
 
                     override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
+                        exitServer()
+                    }
+                })
+    }
+
+    fun exitServer(){
+        ApiClient.instance.service.exitServer(AccountInfo.username,fileID,AccountInfo.username,AccountInfo.token)
+                .compose(NetworkScheduler.compose())
+                .subscribe(object : ApiResponse<ExitServerInfo>(context) {
+                    override fun success(data: ExitServerInfo) {
+                        if (data.success == "true"){
+                        }
+                    }
+
+                    override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
                     }
                 })
     }
 
     fun sendOperation(operation: List<String>) {
-        ApiClient.instance.service.doOT(AccountInfo.username, fileID, AccountInfo.username, AccountInfo.token, operation)
+        ApiClient.instance.service.doOT(AccountInfo.username, fileID, AccountInfo.username, AccountInfo.token, operation, revision)
                 .compose(NetworkScheduler.compose())
                 .subscribe(object : ApiResponse<DoOTInfo>(context) {
                     override fun success(data: DoOTInfo) {
@@ -166,7 +178,7 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
             if (isRetain(a) && isRetain(b)) {
                 result.add('r' + minLength.toString())
             } else if (isInsert(a) && isRetain(b)) {
-                result.add('i' + a.substring(1, outstanding[pos1].length))
+                result.add('i' + a.substring(1, a.length))
             } else if (isRetain(a) && isDelete(b)) {
                 result.add('d' + minLength.toString())
             }
@@ -271,11 +283,11 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
         return length
     }
 
-    private fun isRetain(op: String): Boolean = (op[0] == 'r')
+    private fun isRetain(op: String): Boolean = (op.length > 1 && op[0] == 'r')
 
-    private fun isDelete(op: String): Boolean = (op[0] == 'd')
+    private fun isDelete(op: String): Boolean = (op.length > 1 && op[0] == 'd')
 
-    private fun isInsert(op: String): Boolean = (op[0] == 'i')
+    private fun isInsert(op: String): Boolean = (op.length > 1 && op[0] == 'i')
 
     private fun shortenOperation(op: String, by: Int): String {
         if (isInsert(op)) {
