@@ -74,7 +74,7 @@ public class DownloadFileAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String file = filedata.get(position).getName();
+        String file = filedata.get(position).getMaster() + "/" + filedata.get(position).getName();
         downloadFileItemListener = new DownloadFileListItemListender();
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -160,7 +160,7 @@ public class DownloadFileAdapter extends BaseAdapter{
          * 下载
          */
         private void doDownload() {
-            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,filedata.get(position).getName())
+            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,filedata.get(position).getMaster(),filedata.get(position).getName())
                     .compose(NetworkScheduler.INSTANCE.<ResponseBody>compose())
                     .subscribe(new ApiResponse<ResponseBody>(context) {
                         @Override

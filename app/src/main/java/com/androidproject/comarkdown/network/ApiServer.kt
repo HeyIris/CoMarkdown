@@ -33,6 +33,7 @@ interface ApiServer {
     @POST("download_file/")
     fun downloadFile(@Field("username") username: String,
                      @Field("token") token: String,
+                     @Field("master") master: String,
                      @Field("filename") filename: String): Observable<ResponseBody>
 
     @FormUrlEncoded

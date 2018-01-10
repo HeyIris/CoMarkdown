@@ -7,4 +7,6 @@ object AccountInfo {
     lateinit var username:String
     lateinit var email:String
     lateinit var token:String
+    lateinit var file: PartakeFileItem
+    var filepath: String = ""
 }

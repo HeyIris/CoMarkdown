@@ -14,6 +14,7 @@ import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.filesystem.ActivityFile
 import com.androidproject.comarkdown.filesystem.ActivityFileDownload
 import com.androidproject.comarkdown.markdownedit.edit.MdEditFragment
+import com.androidproject.comarkdown.markdownedit.invite.InviteActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
@@ -101,7 +102,8 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_share -> {
-
+                val intent = Intent(this, InviteActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_manage -> {
                 val intent = Intent(this,ActivityFileDownload::class.java)

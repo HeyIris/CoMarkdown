@@ -1,5 +1,6 @@
 package com.androidproject.comarkdown.markdownedit.edit
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.androidproject.comarkdown.R
+import com.androidproject.comarkdown.data.AccountInfo
 import com.androidproject.comarkdown.ot.Diff_match_patch
 import com.androidproject.comarkdown.ot.OTClient
 import kotlinx.android.synthetic.main.fragment_markdown_edit.*
@@ -30,12 +32,14 @@ class MdEditFragment : Fragment(), MdEditContract.View {
 
     override var filePath: String by Delegates.observable("") { property, oldValue, newValue ->
         if (newValue != "") {
+            AccountInfo.filepath = newValue
             file = File(URI(newValue))
             edit_text.setText(file.readText())
             if(oldValue != ""){
                 otClient.exitServer()
             }
             otClient = OTClient(0, file.name, edit_text.text.toString(), context)
+
         }
     }
 
@@ -98,5 +102,9 @@ class MdEditFragment : Fragment(), MdEditContract.View {
 
     override fun setTextChangedListener(textView: TextView?){
         preview = textView
+    }
+
+    override fun getViewContext(): Context {
+        return context
     }
 }

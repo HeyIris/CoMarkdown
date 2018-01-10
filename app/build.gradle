@@ -24,7 +24,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:design:26.1.0'
@@ -43,14 +43,15 @@ dependencies {
 
     //RxJava
     compile(['io.reactivex.rxjava2:rxandroid:2.0.1',
-             'io.reactivex.rxjava2:rxkotlin:2.1.0'])       //此处可换成'io.reactivex.rxjava2:rxkotlin:2.1.0'
+             'io.reactivex.rxjava2:rxkotlin:2.1.0'])
+    //此处可换成'io.reactivex.rxjava2:rxkotlin:2.1.0'
 
     //RxLifecycle
     compile(['com.trello.rxlifecycle2:rxlifecycle-kotlin:2.2.0',
              'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'])
 
     //SimpleXml
-    compile ('com.squareup.retrofit2:converter-simplexml:2.0.1'){
+    compile('com.squareup.retrofit2:converter-simplexml:2.0.1') {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'

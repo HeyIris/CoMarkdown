@@ -1,5 +1,6 @@
 package com.androidproject.comarkdown.markdownedit.edit
 
+import android.content.Context
 import android.widget.TextView
 import com.androidproject.comarkdown.base.BasePresenter
 import com.androidproject.comarkdown.base.BaseView
@@ -16,9 +17,11 @@ interface MdEditContract{
         var otClient:OTClient
 
         fun setTextChangedListener(textView: TextView?)
+
+        fun getViewContext():Context
     }
 
     interface Presenter : BasePresenter{
-
+        fun searchFile(fileName: String)
     }
 }

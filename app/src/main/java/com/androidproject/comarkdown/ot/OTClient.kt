@@ -42,15 +42,35 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun searchFile(){
+        ApiClient.instance.service.partakeFileList(AccountInfo.username,AccountInfo.token)
+                .compose(NetworkScheduler.compose())
+                .subscribe(object : ApiResponse<PartakeFileInfo>(context) {
+                    override fun success(data: PartakeFileInfo) {
+                        if (data.partake_files != null){
+                            for (item in data.partake_files){
+                                if(item.name == name){
+                                    AccountInfo.file = item
+                                    fileID = item.id
+                                    createServer()
+                                    break
+                                }
+                            }
+                        }
+                    }
+
+                    override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
+                    }
+                })
+
         ApiClient.instance.service.onlineFileList(AccountInfo.username,AccountInfo.token)
                 .compose(NetworkScheduler.compose())
                 .subscribe(object : ApiResponse<OnlineFileInfo>(context) {
                     override fun success(data: OnlineFileInfo) {
-                        if (data.success == "true"){
-                            for (item in data.list){
-                                if(item.name == name){
+                        if (data.list != null) {
+                            for (item in data.list) {
+                                if (item.name == name) {
+                                    AccountInfo.file = PartakeFileItem(AccountInfo.username, item.name, item.id)
                                     fileID = item.id
-                                    createServer()
                                     break
                                 }
                             }
@@ -63,7 +83,7 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun createServer(){
-        ApiClient.instance.service.createServer(AccountInfo.username,fileID,AccountInfo.username,AccountInfo.token)
+        ApiClient.instance.service.createServer(AccountInfo.file.master,AccountInfo.file.id,AccountInfo.username,AccountInfo.token)
                 .compose(NetworkScheduler.compose())
                 .subscribe(object : ApiResponse<CreateServerInfo>(context) {
                     override fun success(data: CreateServerInfo) {
@@ -78,7 +98,7 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun exitServer(){
-        ApiClient.instance.service.exitServer(AccountInfo.username,fileID,AccountInfo.username,AccountInfo.token)
+        ApiClient.instance.service.exitServer(AccountInfo.file.master,AccountInfo.file.id,AccountInfo.username,AccountInfo.token)
                 .compose(NetworkScheduler.compose())
                 .subscribe(object : ApiResponse<ExitServerInfo>(context) {
                     override fun success(data: ExitServerInfo) {
@@ -92,7 +112,7 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun sendOperation(operation: List<String>) {
-        ApiClient.instance.service.doOT(AccountInfo.username, fileID, AccountInfo.username, AccountInfo.token, operation, revision)
+        ApiClient.instance.service.doOT(AccountInfo.file.master, AccountInfo.file.id, AccountInfo.username, AccountInfo.token, operation, revision)
                 .compose(NetworkScheduler.compose())
                 .subscribe(object : ApiResponse<DoOTInfo>(context) {
                     override fun success(data: DoOTInfo) {
