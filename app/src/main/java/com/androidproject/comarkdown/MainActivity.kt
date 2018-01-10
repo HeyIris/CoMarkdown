@@ -3,6 +3,7 @@ package com.androidproject.comarkdown
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -10,15 +11,18 @@ import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.filesystem.ActivityFile
 import kotlinx.android.synthetic.main.activity_main.*
-import com.androidproject.comarkdown.account.AccountFragment
+import com.androidproject.comarkdown.account.setting.SettingFragment
 import com.androidproject.comarkdown.filesystem.ActivityFileDownload
 import com.androidproject.comarkdown.markdownedit.EditFragment
 import com.androidproject.comarkdown.markdownedit.invite.InviteActivity
 import com.androidproject.comarkdown.utils.ShakeListener
 import com.androidproject.comarkdown.utils.addFragment
+import com.androidproject.comarkdown.utils.hideFragment
+import com.androidproject.comarkdown.utils.showFragment
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var shakeListener: ShakeListener
+    private var fragments = ArrayList<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +37,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
         nav_view.inflateHeaderView(R.layout.nav_header_main)
 
-        addFragment(EditFragment(),main_frame.id)
+        fragments.add(EditFragment())
+        addFragment(fragments[0],main_frame.id)
 
         shakeListener = ShakeListener(this)
     }
@@ -85,7 +90,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_option -> {
-
+                val sf = SettingFragment()
+                hideFragment(fragments[0])
+                addFragment(sf,R.id.main_frame)
+                showFragment(sf)
             }
             R.id.nav_share -> {
                 val intent = Intent(this, InviteActivity::class.java)

@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import com.androidproject.comarkdown.utils.ShakeListener
-import com.androidproject.comarkdown.utils.addFragment
+import com.androidproject.comarkdown.utils.replaceFragment
 
 
 class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -101,7 +101,6 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_option -> {
-                addFragment(SettingFragment(),R.id.main_frame)
             }
             R.id.nav_share -> {
                 val intent = Intent(this, InviteActivity::class.java)

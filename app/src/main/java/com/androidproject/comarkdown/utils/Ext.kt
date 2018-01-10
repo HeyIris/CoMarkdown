@@ -21,6 +21,14 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
     supportFragmentManager.inTransaction{replace(frameId, fragment)}
 }
 
+fun AppCompatActivity.showFragment(fragment: Fragment){
+    supportFragmentManager.inTransaction { show(fragment) }
+}
+
+fun AppCompatActivity.hideFragment(fragment: Fragment){
+    supportFragmentManager.inTransaction { hide(fragment) }
+}
+
 fun RxAppCompatActivity.addFragment(fragment: Fragment, frameId: Int){
     supportFragmentManager.inTransaction { add(frameId, fragment) }
 }
