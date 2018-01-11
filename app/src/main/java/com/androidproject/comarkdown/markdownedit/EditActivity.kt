@@ -17,7 +17,7 @@ import com.androidproject.comarkdown.markdownedit.edit.MdEditFragment
 import com.androidproject.comarkdown.markdownedit.invite.InviteFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_edit.*
+import kotlinx.android.synthetic.main.fragment_edit.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import com.androidproject.comarkdown.utils.ShakeListener
 

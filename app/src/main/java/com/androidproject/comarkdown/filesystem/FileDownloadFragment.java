@@ -1,30 +1,25 @@
 package com.androidproject.comarkdown.filesystem;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidproject.comarkdown.MainActivity;
 import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.data.AccountInfo;
 import com.androidproject.comarkdown.data.OnlineFileInfo;
-import com.androidproject.comarkdown.data.OnlineFileItem;
 import com.androidproject.comarkdown.data.PartakeFileInfo;
 import com.androidproject.comarkdown.data.PartakeFileItem;
 import com.androidproject.comarkdown.data.event.LoadFileEvent;
 import com.androidproject.comarkdown.filesystem.adapter.DownloadFileAdapter;
-import com.androidproject.comarkdown.markdownedit.EditActivity;
 import com.androidproject.comarkdown.network.ApiClient;
 import com.androidproject.comarkdown.network.ApiErrorModel;
 import com.androidproject.comarkdown.network.ApiResponse;
@@ -59,7 +54,7 @@ public class FileDownloadFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_download, null);
+        View view = inflater.inflate(R.layout.fragment_download, null);
         return view;
     }
 

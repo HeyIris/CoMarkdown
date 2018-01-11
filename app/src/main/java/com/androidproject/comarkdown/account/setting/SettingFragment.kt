@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.data.AccountInfo
-import kotlinx.android.synthetic.main.activity_setting.*
+import kotlinx.android.synthetic.main.fragment_setting.*
 
 /**
  * Created by evan on 2018/1/11.
@@ -24,7 +24,7 @@ class SettingFragment:Fragment(),SettingContract.View{
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.activity_setting, null)
+        val view = inflater?.inflate(R.layout.fragment_setting, null)
         SettingPresenter(this)
         return view
     }

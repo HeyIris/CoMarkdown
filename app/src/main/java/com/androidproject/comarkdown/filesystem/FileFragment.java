@@ -51,7 +51,7 @@ public class FileFragment extends Fragment implements FileAdapter.OnCopyFileList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_file, null);
+        View view = inflater.inflate(R.layout.fragment_file, null);
         return view;
     }
 
@@ -224,7 +224,7 @@ public class FileFragment extends Fragment implements FileAdapter.OnCopyFileList
     private void doCreateNewFile() {
         fileDialog = new AlertDialog.Builder(getContext()).create();
         fileDialog.show();
-        fileDialog.getWindow().setContentView(R.layout.newfile_dialog);
+        fileDialog.getWindow().setContentView(R.layout.dialog_new_file);
         fileDialog.setView(new EditText(getContext()));
         //加入下面两句以后即可弹出输入法
         fileDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -278,7 +278,7 @@ public class FileFragment extends Fragment implements FileAdapter.OnCopyFileList
     private void doCreateNewFolder() {
         Floderialog = new AlertDialog.Builder(getContext()).create();
         Floderialog.show();
-        Floderialog.getWindow().setContentView(R.layout.newfloder_dialog);
+        Floderialog.getWindow().setContentView(R.layout.dialog_new_floder);
         Floderialog.setView(new EditText(getContext()));
         //加入下面两句以后即可弹出输入法
         Floderialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -332,7 +332,7 @@ public class FileFragment extends Fragment implements FileAdapter.OnCopyFileList
         ifSearching = true;
         searchDialog = new AlertDialog.Builder(getContext()).create();
         searchDialog.show();
-        searchDialog.getWindow().setContentView(R.layout.query_dialog);
+        searchDialog.getWindow().setContentView(R.layout.dialog_query);
         querytv = (TextView) searchDialog.getWindow().findViewById(R.id.query_tv);
         new QueryAsyncTask(querytv,getPathString(),query,fileAdapter,searchDialog).execute();
     }

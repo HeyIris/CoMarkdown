@@ -2,16 +2,14 @@ package com.androidproject.comarkdown.markdownedit.invite
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.androidproject.comarkdown.MainActivity
 import com.androidproject.comarkdown.R
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import com.trello.rxlifecycle2.components.support.RxFragment
-import kotlinx.android.synthetic.main.activity_invite.*
+import kotlinx.android.synthetic.main.fragment_invite.*
 import kotlin.properties.Delegates
 
 /**
@@ -29,7 +27,7 @@ class InviteFragment : RxFragment(), InviteContract.View{
     override lateinit var presenter: InviteContract.Presenter
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(R.layout.activity_invite, null)
+        val view = inflater?.inflate(R.layout.fragment_invite, null)
         InvitePresenter(this)
         return view
     }

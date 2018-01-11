@@ -1,7 +1,6 @@
 package com.androidproject.comarkdown.filesystem.adapter;
 
 import android.content.Context;
-import android.os.Environment;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,12 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidproject.comarkdown.R;
 import com.androidproject.comarkdown.data.AccountInfo;
-import com.androidproject.comarkdown.data.DownloadInfo;
-import com.androidproject.comarkdown.data.OnlineFileItem;
 import com.androidproject.comarkdown.data.PartakeFileItem;
 import com.androidproject.comarkdown.network.ApiClient;
 import com.androidproject.comarkdown.network.ApiErrorModel;
@@ -78,7 +74,7 @@ public class DownloadFileAdapter extends BaseAdapter{
         downloadFileItemListener = new DownloadFileListItemListender();
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_download_file, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_download_file, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {

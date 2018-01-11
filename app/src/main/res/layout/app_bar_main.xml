@@ -20,7 +20,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_edit" />
+    <include layout="@layout/fragment_edit" />
 
     <TextView
         android:layout_width="match_parent"

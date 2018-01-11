@@ -123,7 +123,7 @@ public class FileAdapter extends BaseAdapter {
         fileItemListener = new FileListItemListender();
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_file_cell, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_file_cell, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
