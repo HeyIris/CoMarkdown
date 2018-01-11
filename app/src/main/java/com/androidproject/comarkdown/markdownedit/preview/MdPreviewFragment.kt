@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.androidproject.comarkdown.R
+import com.androidproject.comarkdown.data.event.TextChangedEvent
 import com.zzhoujay.richtext.CacheType
 import com.zzhoujay.richtext.RichText
 import com.zzhoujay.richtext.RichType
@@ -38,8 +39,8 @@ class MdPreviewFragment : Fragment(), MdPreviewContract.View {
     }
 
     @Subscribe
-    fun onEvent(data: Editable?) {
-        RichText.from(data.toString()).type(RichType.markdown).showBorder(true)
+    fun onEvent(textChangedEvent: TextChangedEvent) {
+        RichText.from(textChangedEvent.newValue).type(RichType.markdown).showBorder(true)
                 .cache(CacheType.all).into(preview_text)
     }
 }

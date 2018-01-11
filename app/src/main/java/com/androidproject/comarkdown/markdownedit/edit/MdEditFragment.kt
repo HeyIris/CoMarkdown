@@ -13,7 +13,8 @@ import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.data.AccountInfo
 import com.androidproject.comarkdown.data.event.LoadFileEvent
 import com.androidproject.comarkdown.data.event.OpenFileEvent
-import com.androidproject.comarkdown.ot.Diff_match_patch
+import com.androidproject.comarkdown.data.event.TextChangedEvent
+import com.androidproject.comarkdown.ot.DiffMatchPatch
 import com.androidproject.comarkdown.ot.OTClient
 import kotlinx.android.synthetic.main.fragment_markdown_edit.*
 import org.greenrobot.eventbus.EventBus
@@ -72,15 +73,15 @@ class MdEditFragment : Fragment(), MdEditContract.View {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                EventBus.getDefault().post(p0)
+                EventBus.getDefault().post(TextChangedEvent(p0.toString(), p0.toString()))
             }
         })
         val timerTask = object :TimerTask() {
             override fun run() {
                 if(filePath != ""){
-                    val diff = Diff_match_patch()
+                    val diff = DiffMatchPatch()
                     val lists = diff.diff_main(otClient.file, edit_text.text.toString())
-                    if (lists.size == 1 && lists[0].operation == Diff_match_patch.Operation.EQUAL) {
+                    if (lists.size == 1 && lists[0].operation == DiffMatchPatch.Operation.EQUAL) {
                     } else {
                         opList = ArrayList()
                         for (item in lists) {
