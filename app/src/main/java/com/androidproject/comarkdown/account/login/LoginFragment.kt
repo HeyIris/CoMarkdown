@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.androidproject.comarkdown.MainActivity
 import com.androidproject.comarkdown.R
+import com.androidproject.comarkdown.data.AccountInfo
 import com.androidproject.comarkdown.data.LoginInfo
 import com.androidproject.comarkdown.markdownedit.EditActivity
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -52,14 +53,10 @@ class LoginFragment:Fragment(),LoginContract.View {
     }
 
     override fun loginSuccess() {
-        /*
-        val bundle = Bundle()
-        bundle.putString("username", loginInfo.username)
-        bundle.putString("email", loginInfo.email)
-        bundle.putString("token", loginInfo.token)
-        val intent = Intent(context, EditActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-        intent.putExtras(bundle)
-        startActivity(intent)*/
+        AccountInfo.username = loginInfo.username
+        AccountInfo.email = loginInfo.email
+        AccountInfo.token = loginInfo.token
+        (activity as MainActivity).showAccountInfo()
+        (activity as MainActivity).showMainFragment(MainActivity.FragmentType.EDIT)
     }
 }

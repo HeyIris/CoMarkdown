@@ -9,19 +9,17 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.androidproject.comarkdown.R
-import com.androidproject.comarkdown.account.setting.SettingFragment
 import com.androidproject.comarkdown.data.AccountInfo
 import com.androidproject.comarkdown.data.LoginInfo
-import com.androidproject.comarkdown.filesystem.ActivityFile
-import com.androidproject.comarkdown.filesystem.ActivityFileDownload
+import com.androidproject.comarkdown.filesystem.FileFragment
+import com.androidproject.comarkdown.filesystem.FileDownloadFragment
 import com.androidproject.comarkdown.markdownedit.edit.MdEditFragment
-import com.androidproject.comarkdown.markdownedit.invite.InviteActivity
+import com.androidproject.comarkdown.markdownedit.invite.InviteFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_edit.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import com.androidproject.comarkdown.utils.ShakeListener
-import com.androidproject.comarkdown.utils.replaceFragment
 
 
 class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -96,18 +94,18 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 //startActivity(intent)
             }
             R.id.nav_file -> {
-                val intent = Intent(this, ActivityFile::class.java)
+                val intent = Intent(this, FileFragment::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
             }
             R.id.nav_option -> {
             }
             R.id.nav_share -> {
-                val intent = Intent(this, InviteActivity::class.java)
+                val intent = Intent(this, InviteFragment::class.java)
                 startActivity(intent)
             }
             R.id.nav_manage -> {
-                val intent = Intent(this,ActivityFileDownload::class.java)
+                val intent = Intent(this, FileDownloadFragment::class.java)
                 startActivity(intent)
             }
         }
@@ -117,7 +115,7 @@ class EditActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun popInvite(){
-        val intent = Intent(this, InviteActivity::class.java)
+        val intent = Intent(this, InviteFragment::class.java)
         startActivity(intent)
     }
 

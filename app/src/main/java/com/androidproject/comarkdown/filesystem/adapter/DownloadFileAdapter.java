@@ -160,7 +160,7 @@ public class DownloadFileAdapter extends BaseAdapter{
          * 下载
          */
         private void doDownload() {
-            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.username,AccountInfo.token,filedata.get(position).getMaster(),filedata.get(position).getName())
+            ApiClient.Companion.getInstance().service.downloadFile(AccountInfo.INSTANCE.getUsername(),AccountInfo.INSTANCE.getToken(),filedata.get(position).getMaster(),filedata.get(position).getName())
                     .compose(NetworkScheduler.INSTANCE.<ResponseBody>compose())
                     .subscribe(new ApiResponse<ResponseBody>(context) {
                         @Override

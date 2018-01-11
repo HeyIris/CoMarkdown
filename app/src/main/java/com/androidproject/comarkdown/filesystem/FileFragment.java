@@ -1,17 +1,18 @@
 package com.androidproject.comarkdown.filesystem;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -19,11 +20,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidproject.comarkdown.MainActivity;
 import com.androidproject.comarkdown.R;
+import com.androidproject.comarkdown.data.event.OpenFileEvent;
 import com.androidproject.comarkdown.filesystem.adapter.FileAdapter;
 import com.androidproject.comarkdown.filesystem.async.QueryAsyncTask;
 import com.androidproject.comarkdown.filesystem.utils.FileSortFactory;
-import com.androidproject.comarkdown.markdownedit.EditActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCopyFileListener {
+public class FileFragment extends Fragment implements FileAdapter.OnCopyFileListener {
     private TextView showTextView;
     private ListView listView;
     //菜单
@@ -44,19 +48,24 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
     private String rootPath;
     private Stack<String> nowPathStack;
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_file, null);
+        return view;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initView();
     }
 
     private void initView() {
         rootPath = Environment.getExternalStorageDirectory().toString();
         nowPathStack = new Stack<>();
-        listView = (ListView) findViewById(R.id.lv);
-        showTextView = (TextView) findViewById(R.id.showtv);
+        listView = (ListView) getView().findViewById(R.id.lv);
+        showTextView = (TextView) getView().findViewById(R.id.showtv);
         //获得本地文件信息列表，绑定到data
         files = Environment.getExternalStorageDirectory().listFiles();
         //将根路径推入路径栈
@@ -67,7 +76,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
             }
         }
         showTextView.setText(getPathString());
-        fileAdapter = new FileAdapter(this, data);
+        fileAdapter = new FileAdapter(getContext(), data);
         fileAdapter.setonCopyListner(this);
         listView.setAdapter(fileAdapter);
 
@@ -78,7 +87,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
     public void doCopy(File file) {
 
         waitingCopyFile = file;
-        Toast.makeText(ActivityFile.this,file.getName() + "被添加到粘贴板", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),file.getName() + "被添加到粘贴板", Toast.LENGTH_SHORT).show();
     }
 
     static File waitingCopyFile;
@@ -94,22 +103,9 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
 
             File file = files[position];
             if (file.isFile()) {
-                // 打开
-                //Intent intent = new Intent();
-                // 打开、显示
                 Uri data = Uri.fromFile(file);
-                //Toast.makeText(getBaseContext(),data.toString(),Toast.LENGTH_SHORT).show();
-                int index = file.getName().lastIndexOf(".");
-                String suffix = file.getName().substring(index + 1);
-                //String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
-                Intent intent=new Intent(ActivityFile.this,EditActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("data", data.toString());
-                intent.putExtras(bundle);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                //intent.setDataAndType(data, type);
-                //startActivity(intent);
+                EventBus.getDefault().post(new OpenFileEvent(data.toString()));
+                ((MainActivity)getActivity()).showMainFragment(MainActivity.FragmentType.EDIT);
             } else {
                 //如果是文件夹
                 // 清除列表数据
@@ -143,47 +139,9 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
         return result;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (ifSearching) {
-            ifSearching=false;
-            showChange(getPathString());
-        }else {
-            if (nowPathStack.peek() == rootPath) {
-                super.onBackPressed();
-            } else {
-                nowPathStack.pop();
-                showChange(getPathString());
-            }
-        }
-    }
-
     MenuItem searchItem;
     SearchView searchView;
     MenuItem sortItem;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        //得到搜索框
-        searchItem = menu.findItem(R.id.action_search);
-        sortItem = menu.findItem(R.id.action_sort);
-        searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                doSearch(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -226,7 +184,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
     private void doPaste() {
         File newFile = new File(getPathString()+"/"+waitingCopyFile.getName());
         if (waitingCopyFile.equals(null)) {
-            Snackbar.make(findViewById(R.id.main_view), "当前粘贴板为空，不能粘贴", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(getView().findViewById(R.id.main_view), "当前粘贴板为空，不能粘贴", Snackbar.LENGTH_SHORT).show();
         } else {
             if (waitingCopyFile.isFile()&&waitingCopyFile.exists()){
                 try {
@@ -251,7 +209,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
                 }
             }
             if (newFile.exists()) {
-                Toast.makeText(ActivityFile.this,"复制" + newFile.getName() + "成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"复制" + newFile.getName() + "成功",Toast.LENGTH_SHORT).show();
                 fileAdapter.notifyDataSetChanged();
             }
         }
@@ -264,10 +222,10 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
     EditText newFloderName;
     EditText newFileName;
     private void doCreateNewFile() {
-        fileDialog = new AlertDialog.Builder(ActivityFile.this).create();
+        fileDialog = new AlertDialog.Builder(getContext()).create();
         fileDialog.show();
         fileDialog.getWindow().setContentView(R.layout.newfile_dialog);
-        fileDialog.setView(new EditText(ActivityFile.this));
+        fileDialog.setView(new EditText(getContext()));
         //加入下面两句以后即可弹出输入法
         fileDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         fileDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -296,17 +254,17 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
                                 //创建文件
                                 file.createNewFile();
                                 //给一个吐司提示，显示创建成功
-                                Toast.makeText(ActivityFile.this, "文件"+name + "创建成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "文件"+name + "创建成功", Toast.LENGTH_SHORT).show();
                                 showChange(getPathString());
                                 fileDialog.dismiss();
                             } catch (IOException e) {
-                                Toast.makeText(ActivityFile.this, "文件已存在", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "文件已存在", Toast.LENGTH_SHORT).show();
                             }
 
                         }
 
                         else{
-                            Toast.makeText(ActivityFile.this,"文件名不能为空",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"文件名不能为空",Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -318,10 +276,10 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
      * 创建新文件夹
      */
     private void doCreateNewFolder() {
-        Floderialog = new AlertDialog.Builder(ActivityFile.this).create();
+        Floderialog = new AlertDialog.Builder(getContext()).create();
         Floderialog.show();
         Floderialog.getWindow().setContentView(R.layout.newfloder_dialog);
-        Floderialog.setView(new EditText(ActivityFile.this));
+        Floderialog.setView(new EditText(getContext()));
         //加入下面两句以后即可弹出输入法
         Floderialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         Floderialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -345,17 +303,17 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
                             File folder = new File(getPathString() +"/"+ name);
                             folder.mkdirs();
                             if (folder.exists()) {
-                                Toast.makeText(ActivityFile.this,"文件："+name + " 创建成功",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"文件："+name + " 创建成功",Toast.LENGTH_SHORT).show();
                                 showChange(getPathString());
                                 Floderialog.dismiss();
                             }
                             else{
-                                Toast.makeText(ActivityFile.this,"文件夹不存在",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"文件夹不存在",Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         else{
-                            Toast.makeText(ActivityFile.this,"文件夹名不能为空",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"文件夹名不能为空",Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -372,7 +330,7 @@ public class ActivityFile extends AppCompatActivity implements FileAdapter.OnCop
      */
     private void doSearch(String query) {
         ifSearching = true;
-        searchDialog = new AlertDialog.Builder(ActivityFile.this).create();
+        searchDialog = new AlertDialog.Builder(getContext()).create();
         searchDialog.show();
         searchDialog.getWindow().setContentView(R.layout.query_dialog);
         querytv = (TextView) searchDialog.getWindow().findViewById(R.id.query_tv);

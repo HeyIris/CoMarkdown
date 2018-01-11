@@ -11,10 +11,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.data.AccountInfo
+import com.androidproject.comarkdown.data.event.LoadFileEvent
+import com.androidproject.comarkdown.data.event.OpenFileEvent
 import com.androidproject.comarkdown.ot.Diff_match_patch
 import com.androidproject.comarkdown.ot.OTClient
 import kotlinx.android.synthetic.main.fragment_markdown_edit.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import java.io.File
 import java.net.URI
 import java.util.*
@@ -52,6 +55,7 @@ class MdEditFragment : Fragment(), MdEditContract.View {
     override fun onResume() {
         super.onResume()
         presenter.start()
+        EventBus.getDefault().register(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -98,6 +102,19 @@ class MdEditFragment : Fragment(), MdEditContract.View {
         if (filePath != ""){
             otClient.exitServer()
         }
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe
+    fun onOpenFileEvent(event:OpenFileEvent) {
+        filePath = event.filePath
+    }
+
+    @Subscribe
+    fun onLoadFileEvent(event: LoadFileEvent){
+        AccountInfo.file.name = event.fileName
+        AccountInfo.file.master = event.master
+        filePath = event.filePath
     }
 
     override fun setTextChangedListener(textView: TextView?){

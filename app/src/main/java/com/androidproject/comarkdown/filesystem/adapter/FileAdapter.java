@@ -271,16 +271,16 @@ public class FileAdapter extends BaseAdapter {
         }
 
         private void doUpload(){
-            if(AccountInfo.token.equals("")){
+            if(AccountInfo.INSTANCE.getToken().equals("")){
                 return;
-            }else if(AccountInfo.token.equals("")){
+            }else if(AccountInfo.INSTANCE.getToken().equals("")){
                 return;
             }
             File file = filedata.get(position);
             RequestBody fileRequsetBody = RequestBody.create(MediaType.parse("text/x-markdown; charset=utf-8"),file);
             MultipartBody.Part mdFile = MultipartBody.Part.createFormData("file",null,fileRequsetBody);
-            ApiClient.Companion.getInstance().service.uploadFile(RequestBody.create(null,AccountInfo.username),
-                    RequestBody.create(null,AccountInfo.token),
+            ApiClient.Companion.getInstance().service.uploadFile(RequestBody.create(null,AccountInfo.INSTANCE.getUsername()),
+                    RequestBody.create(null,AccountInfo.INSTANCE.getToken()),
                     RequestBody.create(null,file.getName()),
                     mdFile)
                     .compose(NetworkScheduler.INSTANCE.<UploadInfo>compose())

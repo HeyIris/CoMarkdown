@@ -27,10 +27,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".filesystem.ActivityFileDownload"
+            android:name=".filesystem.FileDownloadFragment"
             android:label="下载文件" />
         <activity
-            android:name=".filesystem.ActivityFile"
+            android:name=".filesystem.FileFragment"
             android:label="文件管理" />
         <activity
             android:name=".markdownedit.EditActivity"
@@ -38,7 +38,7 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".markdownedit.invite.InviteActivity"
+            android:name=".markdownedit.invite.InviteFragment"
             android:label="邀请" />
     </application>
 

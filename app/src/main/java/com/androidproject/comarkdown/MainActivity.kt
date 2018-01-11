@@ -1,6 +1,5 @@
 package com.androidproject.comarkdown
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -9,20 +8,29 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.androidproject.comarkdown.filesystem.ActivityFile
+import com.androidproject.comarkdown.account.AccountFragment
+import com.androidproject.comarkdown.filesystem.FileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import com.androidproject.comarkdown.account.setting.SettingFragment
-import com.androidproject.comarkdown.filesystem.ActivityFileDownload
+import com.androidproject.comarkdown.data.AccountInfo
+import com.androidproject.comarkdown.filesystem.FileDownloadFragment
 import com.androidproject.comarkdown.markdownedit.EditFragment
-import com.androidproject.comarkdown.markdownedit.invite.InviteActivity
-import com.androidproject.comarkdown.utils.ShakeListener
-import com.androidproject.comarkdown.utils.addFragment
-import com.androidproject.comarkdown.utils.hideFragment
-import com.androidproject.comarkdown.utils.showFragment
+import com.androidproject.comarkdown.markdownedit.invite.InviteFragment
+import com.androidproject.comarkdown.utils.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var shakeListener: ShakeListener
     private var fragments = ArrayList<Fragment>()
+
+    enum class FragmentType{
+        EDIT,
+        ACCOUNT,
+        SETTING,
+        FILE,
+        FILEDOWNLOAD,
+        INVITE
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +46,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.inflateHeaderView(R.layout.nav_header_main)
 
         fragments.add(EditFragment())
-        addFragment(fragments[0],main_frame.id)
+        fragments.add(AccountFragment())
+        fragments.add(SettingFragment())
+        fragments.add(FileFragment())
+        fragments.add(FileDownloadFragment())
+        fragments.add(InviteFragment())
+        showMainFragment(FragmentType.EDIT)
 
         shakeListener = ShakeListener(this)
     }
@@ -81,27 +94,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_account -> {
-                /*val intent = Intent(this, AccountFragment::class.java)
-                startActivity(intent)*/
+                if(AccountInfo.token == ""){
+                    showMainFragment(FragmentType.ACCOUNT)
+                }else{
+                    showMainFragment(FragmentType.SETTING)
+                }
             }
             R.id.nav_file -> {
-                val intent = Intent(this, ActivityFile::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                startActivity(intent)
+                showMainFragment(FragmentType.FILE)
             }
             R.id.nav_option -> {
-                val sf = SettingFragment()
-                hideFragment(fragments[0])
-                addFragment(sf,R.id.main_frame)
-                showFragment(sf)
+                showMainFragment(FragmentType.SETTING)
             }
             R.id.nav_share -> {
-                val intent = Intent(this, InviteActivity::class.java)
-                startActivity(intent)
+                showMainFragment(FragmentType.INVITE)
             }
             R.id.nav_manage -> {
-                val intent = Intent(this, ActivityFileDownload::class.java)
-                startActivity(intent)
+                showMainFragment(FragmentType.FILEDOWNLOAD)
             }
         }
         item.isChecked = false
@@ -110,7 +119,37 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun popInvite(){
-        val intent = Intent(this, InviteActivity::class.java)
-        startActivity(intent)
+        showMainFragment(FragmentType.INVITE)
+    }
+
+    fun showAccountInfo(){
+        val navView = nav_view.getHeaderView(0)
+        navView.nav_username.text = AccountInfo.username
+        navView.nav_email.text = AccountInfo.email
+    }
+
+    fun showMainFragment(pos:FragmentType){
+        hideAllFragment()
+        var position = when(pos){
+            FragmentType.EDIT -> 0
+            FragmentType.ACCOUNT -> 1
+            FragmentType.SETTING -> 2
+            FragmentType.FILE -> 3
+            FragmentType.FILEDOWNLOAD -> 4
+            FragmentType.INVITE -> 5
+        }
+        if(fragments[position].isAdded){
+            showFragment(fragments[position])
+        }else {
+            addFragment(fragments[position], R.id.main_frame)
+        }
+    }
+
+    fun hideAllFragment(){
+        for(fragment in fragments){
+            if (fragment.isAdded){
+                hideFragment(fragment)
+            }
+        }
     }
 }

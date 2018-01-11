@@ -10,6 +10,9 @@ import com.androidproject.comarkdown.base.BaseView
 interface SettingContract{
     interface View : BaseView<Presenter> {
         var isActive: Boolean
+
+        fun showAccountInfo()
+
         fun getViewContext(): Context
     }
 

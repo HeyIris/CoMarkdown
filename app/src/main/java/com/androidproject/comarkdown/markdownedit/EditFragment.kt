@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.androidproject.comarkdown.R
+import com.androidproject.comarkdown.markdownedit.edit.MdEditFragment
 import kotlinx.android.synthetic.main.content_edit.*
 
 /**
