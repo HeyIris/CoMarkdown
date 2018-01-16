@@ -2,10 +2,12 @@ package com.androidproject.comarkdown.ot
 
 import android.content.Context
 import com.androidproject.comarkdown.data.*
+import com.androidproject.comarkdown.data.event.ApplyChangeEvent
 import com.androidproject.comarkdown.network.ApiClient
 import com.androidproject.comarkdown.network.ApiErrorModel
 import com.androidproject.comarkdown.network.ApiResponse
 import com.androidproject.comarkdown.network.NetworkScheduler
+import org.greenrobot.eventbus.EventBus
 import kotlin.math.min
 
 /**
@@ -33,6 +35,7 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun applyServer(operation: List<String>) {
+        revision += 1
         state = state.applyServer(this, operation)
     }
 
@@ -97,7 +100,6 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
                     }
 
                     override fun fail(statusCode: Int, apiErrorModel: ApiErrorModel) {
-                        exitServer()
                     }
                 })
     }
@@ -155,6 +157,7 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
                 }
             }
         }
+        EventBus.getDefault().post(ApplyChangeEvent(file, result))
         file = result
     }
 
@@ -224,9 +227,9 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
     }
 
     fun transformOperation(outstanding: List<String>, operation: List<String>): ArrayList<List<String>> {
-        var result = ArrayList<ArrayList<String>>(2)
-        result[0] = ArrayList()
-        result[1] = ArrayList()
+        var result = ArrayList<ArrayList<String>>()
+        result.add(ArrayList())
+        result.add(ArrayList())
         var pos1 = -1
         var pos2 = -1
         var a = ""
@@ -237,11 +240,15 @@ class OTClient(mRevision:Int, fileName:String, fileContent:String, viewContext:C
         while (true) {
             if (a == "") {
                 pos1++
-                a = outstanding[pos1]
+                if (pos1 < outstanding.size) {
+                    a = outstanding[pos1]
+                }
             }
             if (b == "") {
                 pos2++
-                b = operation[pos2]
+                if (pos2 < operation.size) {
+                    b = operation[pos2]
+                }
             }
             if ((a == "") && (b == "")) {
                 break

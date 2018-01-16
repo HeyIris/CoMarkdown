@@ -2,6 +2,7 @@ package com.androidproject.comarkdown.markdownedit.edit
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.androidproject.comarkdown.R
 import com.androidproject.comarkdown.data.AccountInfo
+import com.androidproject.comarkdown.data.event.ApplyChangeEvent
 import com.androidproject.comarkdown.data.event.LoadFileEvent
 import com.androidproject.comarkdown.data.event.OpenFileEvent
 import com.androidproject.comarkdown.data.event.TextChangedEvent
@@ -33,6 +35,7 @@ class MdEditFragment : Fragment(), MdEditContract.View {
     private val timer = Timer(true)
     override lateinit var opList: ArrayList<String>
     override lateinit var otClient: OTClient
+    private lateinit var handle: Handler
 
     override var filePath: String by Delegates.observable("") { property, oldValue, newValue ->
         if (newValue != "") {
@@ -65,6 +68,7 @@ class MdEditFragment : Fragment(), MdEditContract.View {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        handle = Handler()
         edit_text.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -78,7 +82,7 @@ class MdEditFragment : Fragment(), MdEditContract.View {
         })
         val timerTask = object :TimerTask() {
             override fun run() {
-                if(filePath != ""){
+                if (filePath != "") {
                     val diff = DiffMatchPatch()
                     val lists = diff.diff_main(otClient.file, edit_text.text.toString())
                     if (lists.size == 1 && lists[0].operation == DiffMatchPatch.Operation.EQUAL) {
@@ -94,7 +98,7 @@ class MdEditFragment : Fragment(), MdEditContract.View {
                 }
             }
         }
-        timer.schedule(timerTask,5000,5000)
+        timer.schedule(timerTask,3000,2000)
     }
 
     override fun onDestroy() {
@@ -108,7 +112,7 @@ class MdEditFragment : Fragment(), MdEditContract.View {
 
     @Subscribe
     fun onOpenFileEvent(event:OpenFileEvent) {
-        filePath = event.filePath
+        filePath = otClient.file
     }
 
     @Subscribe
@@ -116,6 +120,17 @@ class MdEditFragment : Fragment(), MdEditContract.View {
         AccountInfo.file.name = event.fileName
         AccountInfo.file.master = event.master
         filePath = event.filePath
+    }
+
+    @Subscribe
+    fun onApplyChangeEvent(event: ApplyChangeEvent) {
+        handle.post(object : Runnable{
+            override fun run() {
+                val pos = edit_text.selectionStart
+                edit_text.setText(event.newValue)
+                edit_text.setSelection(pos)
+            }
+        })
     }
 
     override fun setTextChangedListener(textView: TextView?){

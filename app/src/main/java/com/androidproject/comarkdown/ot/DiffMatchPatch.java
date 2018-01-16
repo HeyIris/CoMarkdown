@@ -2146,7 +2146,7 @@ public class DiffMatchPatch {
          * @return text version.
          */
         public String toString() {
-            String prettyText = this.text.replace('\n', '\u00b6');
+            String prettyText = this.text.replace('\n', '\n');
             String text = "";
             switch (operation){
                 case EQUAL:
